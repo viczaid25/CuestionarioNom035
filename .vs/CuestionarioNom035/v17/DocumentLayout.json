@@ -1,0 +1,640 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\views\\reportes\\validacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\views\\reportes\\validacion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\controllers\\reportescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\controllers\\reportescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\controllers\\cuestionariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\controllers\\cuestionariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\viewmodels\\validacioncargavm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\viewmodels\\validacioncargavm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\data\\seed\\initialseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\data\\seed\\initialseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\extensions\\hostextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\extensions\\hostextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Migrations\\20251023141132_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CuestionarioNom035\\Migrations\\20251023141132_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\viewmodels\\resumenvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\viewmodels\\resumenvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\viewmodels\\filtrojefevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\viewmodels\\filtrojefevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\viewmodels\\filtroclientesvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\viewmodels\\filtroclientesvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\viewmodels\\preguntavm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\viewmodels\\preguntavm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\viewmodels\\iniciovm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\viewmodels\\iniciovm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\services\\scoringservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\services\\scoringservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\services\\iscoringservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\services\\iscoringservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\services\\flujoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\services\\flujoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\services\\iflujoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\services\\iflujoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\views\\cuestionario\\resumen.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\views\\cuestionario\\resumen.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\views\\cuestionario\\pregunta.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\views\\cuestionario\\pregunta.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\views\\cuestionario\\filtrojefe.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\views\\cuestionario\\filtrojefe.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\views\\cuestionario\\filtroclientes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\views\\cuestionario\\filtroclientes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\views\\cuestionario\\inicio.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\views\\cuestionario\\inicio.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\data\\nom35dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\data\\nom35dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\enums.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\enums.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\respuesta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\respuesta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\cuestionariosesion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\cuestionariosesion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\cuestionario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\cuestionario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\pregunta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\pregunta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\dimension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\dimension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\dominio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\dominio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\categoria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\categoria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\participante.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\participante.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\models\\area.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\models\\area.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|c:\\users\\dm45207\\source\\repos\\cuestionarionom035\\cuestionarionom035\\wwwroot\\js\\bloqueoback.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{10015935-5B44-413C-8E0E-088E033E7757}|CuestionarioNom035\\CuestionarioNom035.csproj|solutionrelative:cuestionarionom035\\wwwroot\\js\\bloqueoback.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 24,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ReportesController.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Controllers\\ReportesController.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Controllers\\ReportesController.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Controllers\\ReportesController.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Controllers\\ReportesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T15:47:37.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Validacion.cshtml",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Reportes\\Validacion.cshtml",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Views\\Reportes\\Validacion.cshtml",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Reportes\\Validacion.cshtml",
+              "RelativeToolTip": "CuestionarioNom035\\Views\\Reportes\\Validacion.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T15:31:33.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ValidacionCargaVM.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\ValidacionCargaVM.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\ViewModels\\ValidacionCargaVM.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\ValidacionCargaVM.cs",
+              "RelativeToolTip": "CuestionarioNom035\\ViewModels\\ValidacionCargaVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T15:29:45.86Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HostExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Extensions\\HostExtensions.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Extensions\\HostExtensions.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Extensions\\HostExtensions.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Extensions\\HostExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:18:34.614Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "InitialSeeder.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Data\\Seed\\InitialSeeder.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Data\\Seed\\InitialSeeder.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Data\\Seed\\InitialSeeder.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Data\\Seed\\InitialSeeder.cs",
+              "ViewState": "AgIAAMYAAAAAAAAAAAAwwOMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:17:06.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "20251023141132_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Migrations\\20251023141132_InitialCreate.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Migrations\\20251023141132_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Migrations\\20251023141132_InitialCreate.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Migrations\\20251023141132_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:11:32.801Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ResumenVM.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\ResumenVM.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\ViewModels\\ResumenVM.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\ResumenVM.cs",
+              "RelativeToolTip": "CuestionarioNom035\\ViewModels\\ResumenVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:09:10.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "FiltroJefeVM.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\FiltroJefeVM.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\ViewModels\\FiltroJefeVM.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\FiltroJefeVM.cs",
+              "RelativeToolTip": "CuestionarioNom035\\ViewModels\\FiltroJefeVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:08:47.788Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FiltroClientesVM.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\FiltroClientesVM.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\ViewModels\\FiltroClientesVM.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\FiltroClientesVM.cs",
+              "RelativeToolTip": "CuestionarioNom035\\ViewModels\\FiltroClientesVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:08:29.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PreguntaVM.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\PreguntaVM.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\ViewModels\\PreguntaVM.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\PreguntaVM.cs",
+              "RelativeToolTip": "CuestionarioNom035\\ViewModels\\PreguntaVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:08:10.583Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "InicioVM.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\InicioVM.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\ViewModels\\InicioVM.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\ViewModels\\InicioVM.cs",
+              "RelativeToolTip": "CuestionarioNom035\\ViewModels\\InicioVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:07:47.087Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "FlujoService.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\FlujoService.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Services\\FlujoService.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\FlujoService.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Services\\FlujoService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T14:06:15.187Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Resumen.cshtml",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\Resumen.cshtml",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Views\\Cuestionario\\Resumen.cshtml",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\Resumen.cshtml",
+              "RelativeToolTip": "CuestionarioNom035\\Views\\Cuestionario\\Resumen.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T14:04:28.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Pregunta.cshtml",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\Pregunta.cshtml",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Views\\Cuestionario\\Pregunta.cshtml",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\Pregunta.cshtml",
+              "RelativeToolTip": "CuestionarioNom035\\Views\\Cuestionario\\Pregunta.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T14:04:12.347Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "FiltroJefe.cshtml",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\FiltroJefe.cshtml",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Views\\Cuestionario\\FiltroJefe.cshtml",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\FiltroJefe.cshtml",
+              "RelativeToolTip": "CuestionarioNom035\\Views\\Cuestionario\\FiltroJefe.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T14:03:41.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "FiltroClientes.cshtml",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\FiltroClientes.cshtml",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Views\\Cuestionario\\FiltroClientes.cshtml",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\FiltroClientes.cshtml",
+              "RelativeToolTip": "CuestionarioNom035\\Views\\Cuestionario\\FiltroClientes.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T14:03:26.957Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Inicio.cshtml",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\Inicio.cshtml",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Views\\Cuestionario\\Inicio.cshtml",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Views\\Cuestionario\\Inicio.cshtml",
+              "RelativeToolTip": "CuestionarioNom035\\Views\\Cuestionario\\Inicio.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-23T14:03:11.098Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "IScoringService.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\IScoringService.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Services\\IScoringService.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\IScoringService.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Services\\IScoringService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:46:33.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Respuesta.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Respuesta.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Respuesta.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Respuesta.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Respuesta.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:46:07.3Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "Dimension.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Dimension.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Dimension.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Dimension.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Dimension.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:45:18.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Dominio.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Dominio.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Dominio.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Dominio.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Dominio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:45:07.561Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Categoria.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Categoria.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Categoria.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Categoria.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Categoria.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:44:55.112Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Participante.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Participante.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Participante.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Participante.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Participante.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:44:34.772Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Area.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Area.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Area.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Area.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Area.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:44:15.993Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "BaseEntity.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\BaseEntity.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\BaseEntity.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\BaseEntity.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\BaseEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:43:35.367Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Program.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Program.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Program.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Program.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwCcAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:42:47.26Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\appsettings.json",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\appsettings.json",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\appsettings.json",
+              "RelativeToolTip": "CuestionarioNom035\\appsettings.json",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-23T13:42:15.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Nom35DbContext.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Data\\Nom35DbContext.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Data\\Nom35DbContext.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Data\\Nom35DbContext.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Data\\Nom35DbContext.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAqwEAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:37:55.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "bloqueoBack.js",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\wwwroot\\js\\bloqueoBack.js",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\wwwroot\\js\\bloqueoBack.js",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\wwwroot\\js\\bloqueoBack.js",
+              "RelativeToolTip": "CuestionarioNom035\\wwwroot\\js\\bloqueoBack.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-23T13:37:19.571Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CuestionarioController.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Controllers\\CuestionarioController.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Controllers\\CuestionarioController.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Controllers\\CuestionarioController.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Controllers\\CuestionarioController.cs",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAQwNwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:36:26.4Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ScoringService.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\ScoringService.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Services\\ScoringService.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\ScoringService.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Services\\ScoringService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:35:15.47Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "IFlujoService.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\IFlujoService.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Services\\IFlujoService.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Services\\IFlujoService.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Services\\IFlujoService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:34:33.91Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "CuestionarioSesion.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\CuestionarioSesion.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\CuestionarioSesion.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\CuestionarioSesion.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\CuestionarioSesion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:33:48.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "Cuestionario.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Cuestionario.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Cuestionario.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Cuestionario.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Cuestionario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:33:17.419Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Pregunta.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Pregunta.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Pregunta.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Pregunta.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Pregunta.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:32:52.406Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Enums.cs",
+              "DocumentMoniker": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Enums.cs",
+              "RelativeDocumentMoniker": "CuestionarioNom035\\Models\\Enums.cs",
+              "ToolTip": "C:\\Users\\dm45207\\source\\repos\\CuestionarioNom035\\CuestionarioNom035\\Models\\Enums.cs",
+              "RelativeToolTip": "CuestionarioNom035\\Models\\Enums.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T13:32:11.01Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

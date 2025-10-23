@@ -1,0 +1,14 @@
+﻿@model NOM35.Web.ViewModels.InicioVM
+<form asp-action="Inicio" method="post">
+    <div>
+        <label>Número de empleado</label>
+        <input asp-for="NumeroEmpleado" />
+        <span asp-validation-for="NumeroEmpleado"></span>
+    </div>
+    <div>
+        <label>Área (Id)</label>
+        <input asp-for="AreaId" type="number" />
+        <span asp-validation-for="AreaId"></span>
+    </div>
+    <button type="submit">Iniciar</button>
+</form>

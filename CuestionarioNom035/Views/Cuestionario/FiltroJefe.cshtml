@@ -1,0 +1,8 @@
+﻿@model NOM35.Web.ViewModels.FiltroJefeVM
+<form asp-action="SetFiltroJefe" method="post">
+	<input type="hidden" asp-for="SesionId" />
+	<p>Soy jefe de otros trabajadores:</p>
+	<label><input type="radio" name="EsJefe" value="true" required /> Sí</label>
+	<label><input type="radio" name="EsJefe" value="false" required /> No</label>
+	<button type="submit">Continuar</button>
+</form>

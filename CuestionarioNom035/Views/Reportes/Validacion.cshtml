@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Validación de carga NOM-35";
+    var total = (int)(ViewData["TotalPreguntas"] ?? 0);
+}
+<h2>@ViewData["Title"]</h2>
+<p><strong>Total de preguntas:</strong> @total @if (total == 72)
+    {
+        <span>(✔ esperado 72)</span>
+    }
+    else
+    {
+        <span>(⚠ esperado 72)</span>
+    }</p>
+<p class="text-muted">URL: /Reportes/Validacion</p>

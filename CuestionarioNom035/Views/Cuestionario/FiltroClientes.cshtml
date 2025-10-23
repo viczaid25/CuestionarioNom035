@@ -1,0 +1,8 @@
+﻿@model NOM35.Web.ViewModels.FiltroClientesVM
+<form asp-action="SetFiltroClientes" method="post">
+	<input type="hidden" asp-for="SesionId" />
+	<p>En mi trabajo debo brindar servicio a clientes o usuarios:</p>
+	<label><input type="radio" name="AtiendeClientes" value="true" required /> Sí</label>
+	<label><input type="radio" name="AtiendeClientes" value="false" required /> No</label>
+	<button type="submit">Continuar</button>
+</form>

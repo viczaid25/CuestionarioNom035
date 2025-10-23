@@ -1,0 +1,29 @@
+﻿@model NOM35.Web.ViewModels.PreguntaVM
+<form id="formPregunta" asp-action="Responder" method="post">
+  <input type="hidden" asp-for="SesionId" />
+  <input type="hidden" asp-for="AntiBackToken" />
+  <input type="hidden" asp-for="Numero" />
+  <h3>@Model.Numero. @Model.Texto</h3>
+  <small>@Model.Categoria / @Model.Dominio / @Model.Dimension</small>
+
+    @foreach (var opt in Enum.GetValues(typeof(NOM35.Web.Models.OpcionLikert)))
+    {
+        <label>
+          <input type="radio" name="Seleccion" value="@((int)opt)" required />
+            @opt
+        </label>
+
+        <br />
+    }
+  <button id="btnContinuar" type="submit">Continuar</button>
+</form>
+<script>
+history.pushState(null, document.title, location.href);
+window.addEventListener('popstate', function () {
+  history.pushState(null, document.title, location.href);
+});
+document.getElementById('formPregunta')?.addEventListener('submit', function(){
+  const btn = document.getElementById('btnContinuar');
+  if (btn){ btn.disabled = true; btn.innerText = 'Enviando...'; }
+});
+</script>

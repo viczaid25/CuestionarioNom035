@@ -1,0 +1,24 @@
+﻿@model NOM35.Web.ViewModels.ResumenVM
+<h2>Resumen</h2>
+<p>Total: @Model.Total</p>
+<h4>Por Categoría</h4>
+<ul>
+	@foreach (var kv in Model.PorCategoria)
+	{
+		<li>Cat @kv.Key: @kv.Value</li>
+	}
+</ul>
+<h4>Por Dominio</h4>
+<ul>
+	@foreach (var kv in Model.PorDominio)
+	{
+		<li>Dom @kv.Key: @kv.Value</li>
+	}
+</ul>
+<h4>Por Dimensión</h4>
+<ul>
+	@foreach (var kv in Model.PorDimension)
+	{
+		<li>Dim @kv.Key: @kv.Value</li>
+	}
+</ul>
