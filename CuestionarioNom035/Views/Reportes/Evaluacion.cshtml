@@ -1,0 +1,108 @@
+﻿@model NOM35.Web.ViewModels.EvaluacionVM
+@{
+    ViewData["Title"] = "Evaluación del cuestionario";
+    var azul = "#2c5fa8";
+}
+
+<div class="card p-4 mb-4">
+    <h3 class="mb-3">Resultado global</h3>
+    <div class="d-flex align-items-center gap-3">
+        <div class="p-2 rounded text-white" style="background-color:@Model.NivelGlobalColor">
+            <strong>@Model.NivelGlobal</strong>
+        </div>
+        <div>Calificación final (Cfinal): <strong>@Model.Cfinal</strong></div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card p-3">
+            <h5 class="mb-3">Puntajes por categoría (Ccat)</h5>
+            <canvas id="barCategorias" height="220"></canvas>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card p-3">
+            <h5 class="mb-3">Puntajes por dominio (Cdom)</h5>
+            <canvas id="radarDominios" height="220"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        (function(){
+          const azul = '#2c5fa8';
+          const azulSuave = 'rgba(44,95,168,0.25)';
+          const grisBorde = 'rgba(44,95,168,0.4)';
+
+          // Datos desde el modelo
+          const catLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CatLabels));
+          const catValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CatValues));
+          const domLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomLabels));
+          const domValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomValues));
+
+          // --- Barras: Categorías
+          new Chart(document.getElementById('barCategorias'), {
+            type: 'bar',
+            data: {
+              labels: catLabels,
+              datasets: [{
+                label: 'Ccat',
+                data: catValues,
+                backgroundColor: azulSuave,
+                borderColor: azul,
+                borderWidth: 2,
+                borderRadius: 8
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true }
+              },
+              scales: {
+                x: { ticks: { color: '#333', maxRotation: 45, minRotation: 0 } },
+                y: { beginAtZero: true, ticks: { color: '#333' }, grid: { color: '#e5ecf4' } }
+              }
+            }
+          });
+
+          // --- Radar: Dominios
+          new Chart(document.getElementById('radarDominios'), {
+            type: 'radar',
+            data: {
+              labels: domLabels,
+              datasets: [{
+                label: 'Cdom',
+                data: domValues,
+                fill: true,
+                backgroundColor: azulSuave,
+                borderColor: azul,
+                pointBackgroundColor: azul,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: azul
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { display: false }
+              },
+              scales: {
+                r: {
+                  angleLines: { color: '#e5ecf4' },
+                  grid: { color: '#e5ecf4' },
+                  pointLabels: { color: '#333' },
+                  ticks: { showLabelBackdrop: false, color: '#666' }
+                }
+              }
+            }
+          });
+        })();
+    </script>
+}

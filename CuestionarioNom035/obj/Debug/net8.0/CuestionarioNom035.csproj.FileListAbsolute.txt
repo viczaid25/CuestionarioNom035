@@ -171,3 +171,4 @@ C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\ne
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\CuestionarioNom035.pdb
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\CuestionarioNom035.genruntimeconfig.cache
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\ref\CuestionarioNom035.dll
+C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\CuestionarioNom035.sourcelink.json

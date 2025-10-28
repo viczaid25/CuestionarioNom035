@@ -43,11 +43,6 @@ public class Nom35DbContext : DbContext
           .HasForeignKey(p => p.DimensionId)
           .OnDelete(DeleteBehavior.Restrict);
 
-        mb.Entity<Participante>()
-          .HasOne(p => p.Area)
-          .WithMany()
-          .HasForeignKey(p => p.AreaId)
-          .OnDelete(DeleteBehavior.Restrict);
 
         mb.Entity<Respuesta>()
           .HasOne(r => r.Cuestionario)

@@ -1,6 +1,24 @@
-﻿namespace NOM35.Web.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public enum OpcionLikert { Siempre = 4, CasiSiempre = 3, AlgunasVeces = 2, CasiNunca = 1, Nunca = 0 }
+namespace NOM35.Web.Models;
+
+public enum OpcionLikert
+{
+    [Display(Name = "Siempre")]
+    Siempre = 4,
+
+    [Display(Name = "Casi Siempre")]
+    CasiSiempre = 3,
+
+    [Display(Name = "Algunas Veces")]
+    AlgunasVeces = 2,
+
+    [Display(Name = "Casi Nunca")]
+    CasiNunca = 1,
+
+    [Display(Name = "Nunca")]
+    Nunca = 0
+}
 
 public static class ScoringRules
 {
@@ -16,3 +34,10 @@ public static class ScoringRules
         29,54,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72
     };
 }
+
+public enum TipoEmpleado
+{
+    DL = 1,
+    IDL = 2
+}
+

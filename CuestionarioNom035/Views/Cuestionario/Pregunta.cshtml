@@ -1,29 +1,52 @@
-﻿@model NOM35.Web.ViewModels.PreguntaVM
-<form id="formPregunta" asp-action="Responder" method="post">
-  <input type="hidden" asp-for="SesionId" />
-  <input type="hidden" asp-for="AntiBackToken" />
-  <input type="hidden" asp-for="Numero" />
-  <h3>@Model.Numero. @Model.Texto</h3>
-  <small>@Model.Categoria / @Model.Dominio / @Model.Dimension</small>
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Reflection
 
-    @foreach (var opt in Enum.GetValues(typeof(NOM35.Web.Models.OpcionLikert)))
-    {
-        <label>
-          <input type="radio" name="Seleccion" value="@((int)opt)" required />
-            @opt
-        </label>
+@model NOM35.Web.ViewModels.PreguntaVM
+@{
+    ViewData["Title"] = $"Pregunta {Model.Numero}";
+}
 
-        <br />
-    }
-  <button id="btnContinuar" type="submit">Continuar</button>
-</form>
-<script>
-history.pushState(null, document.title, location.href);
-window.addEventListener('popstate', function () {
-  history.pushState(null, document.title, location.href);
-});
-document.getElementById('formPregunta')?.addEventListener('submit', function(){
-  const btn = document.getElementById('btnContinuar');
-  if (btn){ btn.disabled = true; btn.innerText = 'Enviando...'; }
-});
-</script>
+<div class="card p-4 mx-auto" style="max-width: 600px;">
+    <form id="formPregunta" asp-action="Responder" method="post">
+        <input type="hidden" asp-for="SesionId" />
+        <input type="hidden" asp-for="AntiBackToken" />
+        <input type="hidden" asp-for="Numero" />
+
+        <h5 class="mb-2 text-secondary">Pregunta @Model.Numero</h5>
+        <h4 class="mb-4">@Model.Texto</h4>
+
+        <div class="mb-4">
+            
+
+            @foreach (NOM35.Web.Models.OpcionLikert opt in Enum.GetValues(typeof(NOM35.Web.Models.OpcionLikert)))
+            {
+                var display = opt.GetType()
+                .GetMember(opt.ToString())
+                .First()
+                .GetCustomAttribute<DisplayAttribute>()?
+                .Name ?? opt.ToString();
+
+                <label class="btn-option">
+                    <input type="radio" name="Seleccion" value="@((int)opt)" required />
+                    <span>@display</span>
+                </label>
+            }
+
+        </div>
+
+        <button id="btnContinuar" type="submit" class="btn w-100">Continuar</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function () {
+          history.pushState(null, document.title, location.href);
+        });
+        document.getElementById('formPregunta')?.addEventListener('submit', function(){
+          const btn = document.getElementById('btnContinuar');
+          if (btn){ btn.disabled = true; btn.innerText = 'Guardando...'; }
+        });
+    </script>
+}

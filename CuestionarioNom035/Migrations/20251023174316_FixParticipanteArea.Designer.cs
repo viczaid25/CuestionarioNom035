@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NOM35.Web.Data;
 
@@ -11,9 +12,11 @@ using NOM35.Web.Data;
 namespace CuestionarioNom035.Migrations
 {
     [DbContext(typeof(Nom35DbContext))]
-    partial class Nom35DbContextModelSnapshot : ModelSnapshot
+    [Migration("20251023174316_FixParticipanteArea")]
+    partial class FixParticipanteArea
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +66,6 @@ namespace CuestionarioNom035.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Anio")
-                        .HasColumnType("int");
 
                     b.Property<bool?>("AtiendeClientes")
                         .HasColumnType("bit");
@@ -173,9 +173,6 @@ namespace CuestionarioNom035.Migrations
                     b.Property<string>("NumeroEmpleado")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TipoEmpleado")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

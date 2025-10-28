@@ -1,22 +1,90 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --color-primario: #2c5fa8;
+    --color-primario-oscuro: #20497f;
+    --color-fondo: #f7f9fc;
+    --color-texto: #333;
+    --color-borde: #d0d7e2;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
 }
+
+.navbar {
+    background-color: var(--color-primario) !important;
+}
+
+h1, h2, h3, h4 {
+    color: var(--color-primario);
+    font-weight: 600;
+}
+
+button, .btn {
+    background-color: var(--color-primario);
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+    button:hover, .btn:hover {
+        background-color: var(--color-primario-oscuro);
+        color: #fff;
+    }
+
+.form-control, input[type="text"], input[type="number"] {
+    border-radius: 8px;
+    border: 1px solid var(--color-borde);
+    padding: 0.6rem;
+}
+
+label {
+    font-weight: 500;
+    color: var(--color-primario-oscuro);
+}
+
+.table-sm {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .table-sm th {
+        background-color: var(--color-primario);
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .table-sm td, .table-sm th {
+        padding: 0.6rem 0.8rem;
+        border-color: var(--color-borde);
+    }
+
+.card {
+    border-radius: 12px;
+    border: 1px solid var(--color-borde);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    background-color: #fff;
+}
+
+.btn-option {
+    display: block;
+    width: 100%;
+    background: #fff;
+    color: var(--color-primario-oscuro);
+    border: 1.5px solid var(--color-borde);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    margin-bottom: 0.8rem;
+    transition: all 0.2s;
+}
+
+    .btn-option:hover, .btn-option:focus-within {
+        border-color: var(--color-primario);
+        background-color: #f0f5fc;
+    }

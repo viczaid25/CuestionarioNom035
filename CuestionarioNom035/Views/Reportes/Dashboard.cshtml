@@ -1,0 +1,184 @@
+﻿@model NOM35.Web.ViewModels.ReportesDashboardVM
+@{
+    ViewData["Title"] = "Dashboard de Reportes NOM-35";
+    var azul = "#2c5fa8";
+}
+
+<div class="card p-3 mb-3">
+  <form method="get" class="row g-2 align-items-end">
+    <div class="col-sm-4">
+            <label class="form-label">Año</label>
+            <select name="anio" class="form-select" asp-items="Model.AniosSelect"></select>
+    </div>
+    <div class="col-sm-4">
+            <label class="form-label">Área</label>
+            <select name="area" class="form-select" asp-items="Model.AreasSelect"></select>
+    </div>
+    <div class="col-sm-4">
+      <button class="btn w-100" type="submit">Aplicar filtros</button>
+    </div>
+  </form>
+</div>
+
+@if (Model.TotalCuestionarios == 0)
+{
+  <div class="alert alert-warning">No hay evaluaciones para los filtros seleccionados.</div>
+}
+else
+{
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">Cuestionarios</div>
+        <div class="h4 mb-0">@Model.TotalCuestionarios</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">Cfinal promedio</div>
+        <div class="h4 mb-0">@Model.CfinalPromedio.ToString("0.00")</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">IDL (prom.)</div>
+        <div class="h4 mb-0">@Model.CfinalPromedioIDL.ToString("0.00") <span class="text-muted">(@Model.TotalIDL)</span></div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <div class="text-muted">DL (prom.)</div>
+        <div class="h4 mb-0">@Model.CfinalPromedioDL.ToString("0.00") <span class="text-muted">(@Model.TotalDL)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5 class="mb-3">Categorías (Ccat promedio)</h5>
+        <canvas id="barCategorias" height="240"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5 class="mb-3">Dominios (Cdom promedio)</h5>
+        <canvas id="radarDominios" height="240"></canvas>
+      </div>
+    </div>
+  </div>
+
+  @if (!string.IsNullOrWhiteSpace(Model.Area) && Model.Anio.HasValue)
+  {
+    <div class="row g-4 mt-2">
+      <div class="col-lg-6">
+        <div class="card p-3">
+          <h5 class="mb-3">Resultados del departamento: <strong>@Model.Area</strong> (@Model.Anio)</h5>
+          <p class="text-muted mb-0">Promedios y totales mostrados en los gráficos de arriba.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card p-3">
+          <h5 class="mb-3">Evaluaciones individuales</h5>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Empleado</th>
+                  <th>Tipo</th>
+                  <th>Fecha</th>
+                  <th>Cfinal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var e in Model.Evaluaciones)
+                {
+                  <tr>
+                    <td>@e.Id</td>
+                    <td>@e.NumeroEmpleado</td>
+                    <td>@e.TipoEmpleado</td>
+                    <td>@e.Fecha</td>
+                    <td>@e.Cfinal.ToString("0.00")</td>
+                    <td>
+                      <a class="btn btn-sm" href="/Reportes/Evaluacion/@e.Id">Ver</a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+}
+
+@section Scripts{
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+  const azul = '#2c5fa8';
+  const azulSuave = 'rgba(44,95,168,0.25)';
+
+  const catLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CatLabels));
+  const catValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CatValues));
+  const domLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomLabels));
+  const domValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomValues));
+
+  // Barras Categorías
+  new Chart(document.getElementById('barCategorias'), {
+    type: 'bar',
+    data: {
+      labels: catLabels,
+      datasets: [{
+        label: 'Ccat (prom.)',
+        data: catValues,
+        backgroundColor: azulSuave,
+        borderColor: azul,
+        borderWidth: 2,
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#333' } },
+        y: { beginAtZero: true, grid: { color: '#e5ecf4' }, ticks: { color: '#333' } }
+      }
+    }
+  });
+
+  // Radar Dominios
+  new Chart(document.getElementById('radarDominios'), {
+    type: 'radar',
+    data: {
+      labels: domLabels,
+      datasets: [{
+        label: 'Cdom (prom.)',
+        data: domValues,
+        fill: true,
+        backgroundColor: azulSuave,
+        borderColor: azul,
+        pointBackgroundColor: azul
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          angleLines: { color: '#e5ecf4' },
+          grid: { color: '#e5ecf4' },
+          pointLabels: { color: '#333' },
+          ticks: { showLabelBackdrop: false, color: '#666' }
+        }
+      }
+    }
+  });
+})();
+</script>
+}

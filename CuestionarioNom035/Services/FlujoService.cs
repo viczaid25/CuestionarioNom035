@@ -6,9 +6,7 @@ namespace NOM35.Web.Services
     {
         public bool DebeMostrar(int n, Cuestionario c)
         {
-            // 65-68 dependen de AtiendeClientes
             if (n is >= 65 and <= 68) return c.AtiendeClientes == true;
-            // 69-72 dependen de EsJefe
             if (n is >= 69 and <= 72) return c.EsJefe == true;
             return true;
         }
@@ -16,7 +14,20 @@ namespace NOM35.Web.Services
         public int SiguienteNumero(Cuestionario c, int actual)
         {
             int next = actual + 1;
-            while (next <= 72 && !DebeMostrar(next, c)) next++;
+
+            // ⚠️ Punto de decisión: antes de 65 y 69 preguntar filtros
+            if (next == 65 && c.AtiendeClientes is null) return 65;
+            if (next == 69 && c.EsJefe is null) return 69;
+
+            while (next <= 72 && !DebeMostrar(next, c))
+            {
+                next++;
+
+                // Si vamos a entrar a la zona 69-72 y aún no se ha respondido EsJefe,
+                // detente en 69 para mostrar el filtro.
+                if (next == 69 && c.EsJefe is null) return 69;
+            }
+
             return next;
         }
     }

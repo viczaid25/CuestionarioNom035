@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NOM35.Web.Data;
 
@@ -11,9 +12,11 @@ using NOM35.Web.Data;
 namespace CuestionarioNom035.Migrations
 {
     [DbContext(typeof(Nom35DbContext))]
-    partial class Nom35DbContextModelSnapshot : ModelSnapshot
+    [Migration("20251023211931_AddAnioAndTipoEmpleado")]
+    partial class AddAnioAndTipoEmpleado
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

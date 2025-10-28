@@ -1,9 +1,11 @@
-﻿namespace NOM35.Web.Models
+﻿namespace NOM35.Web.Models;
+
+public class Participante : BaseEntity
 {
-    public class Participante : BaseEntity
-    {
-        public string NumeroEmpleado { get; set; } = string.Empty;
-        public int AreaId { get; set; }
-        public Area? Area { get; set; }
-    }
+    public string NumeroEmpleado { get; set; } = "";
+
+    public string AreaNombre { get; set; } = "";
+
+
+    public TipoEmpleado TipoEmpleado { get; set; }
 }

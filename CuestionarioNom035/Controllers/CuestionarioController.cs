@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NOM35.Web.Data;
 using NOM35.Web.Models;
@@ -16,32 +17,82 @@ public class CuestionarioController : Controller
     public CuestionarioController(Nom35DbContext db, IFlujoService flujo, IScoringService score)
     { _db = db; _flujo = flujo; _score = score; }
 
-    // GET: /Cuestionario/Inicio
-    public IActionResult Inicio() => View(new InicioVM());
+    [HttpGet]
+    public IActionResult Inicio()
+    {
+        var vm = new InicioVM();
+        return View(vm);
+    }
 
-    // POST: crea Cuestionario + Sesión
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Inicio(InicioVM vm)
     {
+        // Reponer el select si vuelves con errores
+        if (vm.AreasDisponibles == null || vm.AreasDisponibles.Count == 0)
+        {
+            vm.AreasDisponibles = new()
+        {
+            new SelectListItem { Text = "MELX", Value = "MELX" },
+            new SelectListItem { Text = "SAL",  Value = "SAL" },
+            new SelectListItem { Text = "IT",   Value = "IT"  },
+            new SelectListItem { Text = "PD",   Value = "PD"  },
+            new SelectListItem { Text = "LGL",  Value = "LGL" },
+            new SelectListItem { Text = "PRC",  Value = "PRC" },
+            new SelectListItem { Text = "TOP",  Value = "TOP" },
+            new SelectListItem { Text = "HR",   Value = "HR"  },
+            new SelectListItem { Text = "FIN",  Value = "FIN" },
+            new SelectListItem { Text = "QC",   Value = "QC"  },
+            new SelectListItem { Text = "PC",   Value = "PC"  },
+            new SelectListItem { Text = "FC",   Value = "FC"  }
+        };
+        }
+
         if (!ModelState.IsValid) return View(vm);
 
+        var permitidas = new HashSet<string>(new[]
+        { "MELX","SAL","IT","PD","LGL","PRC","TOP","HR","FIN","QC","PC","FC" },
+            StringComparer.OrdinalIgnoreCase);
+
+        if (!permitidas.Contains(vm.Area))
+        {
+            ModelState.AddModelError(nameof(vm.Area), "Área no válida.");
+            return View(vm);
+        }
+
+        if (vm.TipoEmpleado is null)
+        {
+            ModelState.AddModelError(nameof(vm.TipoEmpleado), "Selecciona el tipo de empleado.");
+            return View(vm);
+        }
+
         // Obtén o crea el participante
-        var part = await _db.Participantes.FirstOrDefaultAsync(p => p.NumeroEmpleado == vm.NumeroEmpleado);
+        var part = await _db.Participantes
+            .FirstOrDefaultAsync(p => p.NumeroEmpleado == vm.NumeroEmpleado);
+
         if (part is null)
         {
-            // valida que exista el Area
-            var area = await _db.Areas.FindAsync(vm.AreaId);
-            if (area is null)
+            part = new Participante
             {
-                ModelState.AddModelError(nameof(vm.AreaId), "Área no válida.");
-                return View(vm);
-            }
-            part = new Participante { NumeroEmpleado = vm.NumeroEmpleado, AreaId = vm.AreaId };
+                NumeroEmpleado = vm.NumeroEmpleado,
+                AreaNombre = vm.Area,
+                TipoEmpleado = vm.TipoEmpleado.Value
+            };
             _db.Participantes.Add(part);
             await _db.SaveChangesAsync();
         }
+        else
+        {
+            // si quieres actualizar área/tipo al reingresar:
+            part.AreaNombre = vm.Area;
+            part.TipoEmpleado = vm.TipoEmpleado.Value;
+            await _db.SaveChangesAsync();
+        }
 
-        var c = new Cuestionario { ParticipanteId = part.Id };
+        var c = new Cuestionario
+        {
+            ParticipanteId = part.Id,
+            Anio = DateTime.Now.Year   // o DateTime.UtcNow.Year
+        };
         _db.Cuestionarios.Add(c);
         await _db.SaveChangesAsync();
 
@@ -52,31 +103,85 @@ public class CuestionarioController : Controller
         return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
     }
 
-    // GET: /Cuestionario/Pregunta/{sesionId}
+    // Helper para rellenar el Select si regresas la vista con errores
+    private static List<SelectListItem> ObtenerAreasFijas() => new()
+{
+    new SelectListItem { Text = "MELX", Value = "MELX" },
+    new SelectListItem { Text = "SAL",  Value = "SAL" },
+    new SelectListItem { Text = "IT",   Value = "IT"  },
+    new SelectListItem { Text = "PD",   Value = "PD"  },
+    new SelectListItem { Text = "LGL",  Value = "LGL" },
+    new SelectListItem { Text = "PRC",  Value = "PRC" },
+    new SelectListItem { Text = "TOP",  Value = "TOP" },
+    new SelectListItem { Text = "HR",   Value = "HR"  },
+    new SelectListItem { Text = "FIN",  Value = "FIN" },
+    new SelectListItem { Text = "QC",   Value = "QC"  },
+    new SelectListItem { Text = "PC",   Value = "PC"  },
+    new SelectListItem { Text = "FC",   Value = "FC"  }
+};
+
+    // GET: /Cuestionario/Pregunta/{id}
+    [HttpGet]
     public async Task<IActionResult> Pregunta(int id)
     {
         var ses = await _db.CuestionarioSesiones
             .Include(s => s.Cuestionario)
-            .FirstAsync(s => s.Id == id);
+            .FirstOrDefaultAsync(s => s.Id == id);
 
-        // Filtro clientes antes de 65
+        if (ses is null) return NotFound();
+
+        // Si ya terminó, ir a resumen
+        if (ses.IndiceActual > 72)
+            return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
+
+        // Mostrar filtros cuando toca y el flag está sin responder
         if (ses.IndiceActual == 65 && ses.Cuestionario.AtiendeClientes is null)
             return View("FiltroClientes", new FiltroClientesVM { SesionId = id });
 
-        // Filtro jefe antes de 69
         if (ses.IndiceActual == 69 && ses.Cuestionario.EsJefe is null)
             return View("FiltroJefe", new FiltroJefeVM { SesionId = id });
 
+        // Si el índice actual NO debe mostrarse (por los filtros), saltar al siguiente visible
+        if (!_flujo.DebeMostrar(ses.IndiceActual, ses.Cuestionario))
+        {
+            var next = _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual - 1);
+            if (next > 72)
+            {
+                ses.IndiceActual = 73;
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
+            }
+            ses.IndiceActual = next;
+            ses.AntiBackToken = Guid.NewGuid().ToString();
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        }
+
+        // Cargar la pregunta del índice actual (usa FirstOrDefault y avanza si no existe)
         var pregunta = await _db.Preguntas
-            .Include(p => p.Dimension)
-                .ThenInclude(d => d.Dominio)
-                    .ThenInclude(o => o.Categoria)
-            .FirstAsync(p => p.Numero == ses.IndiceActual);
+            .Include(p => p.Dimension).ThenInclude(d => d.Dominio).ThenInclude(o => o.Categoria)
+            .FirstOrDefaultAsync(p => p.Numero == ses.IndiceActual);
+
+        if (pregunta == null)
+        {
+            // Si no hay pregunta con ese número, avanza al siguiente visible
+            var next = _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual);
+            if (next > 72)
+            {
+                ses.IndiceActual = 73;
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
+            }
+            ses.IndiceActual = next;
+            ses.AntiBackToken = Guid.NewGuid().ToString();
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        }
 
         var vm = new PreguntaVM
         {
-            SesionId = id,
-            AntiBackToken = ses.AntiBackToken,
+            SesionId = ses.Id,
+            AntiBackToken = ses.AntiBackToken ?? "",
             Numero = pregunta.Numero,
             Texto = pregunta.Texto,
             Categoria = pregunta.Dimension.Dominio.Categoria.Nombre,
@@ -84,7 +189,7 @@ public class CuestionarioController : Controller
             Dimension = pregunta.Dimension.Nombre
         };
 
-        return View("Pregunta", vm);
+        return View(vm);
     }
 
     // POST: /Cuestionario/Responder
@@ -108,6 +213,23 @@ public class CuestionarioController : Controller
             Opcion = vm.Seleccion
         });
         await _db.SaveChangesAsync();
+
+        // Chequeos de decisión inmediatos:
+        if (ses.IndiceActual == 64 && ses.Cuestionario.AtiendeClientes is null)
+        {
+            ses.IndiceActual = 65;                 // para que GET muestre FiltroClientes
+            ses.AntiBackToken = Guid.NewGuid().ToString();
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        }
+
+        if (ses.IndiceActual == 68 && ses.Cuestionario.EsJefe is null)
+        {
+            ses.IndiceActual = 69;                 // para que GET muestre FiltroJefe
+            ses.AntiBackToken = Guid.NewGuid().ToString();
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        }
 
         int next = _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual);
         if (next > 72)
@@ -219,4 +341,60 @@ public class CuestionarioController : Controller
 
         return View(vm);
     }
+
+    // POST: /Cuestionario/FiltroClientes
+    [HttpPost]
+    public async Task<IActionResult> FiltroClientes(FiltroClientesVM vm)
+    {
+        var ses = await _db.CuestionarioSesiones
+            .Include(s => s.Cuestionario)
+            .FirstOrDefaultAsync(s => s.Id == vm.SesionId);
+        if (ses is null) return NotFound();
+
+        ses.Cuestionario.AtiendeClientes = vm.AtiendeClientes;
+        await _db.SaveChangesAsync();
+
+        // Partimos desde 65 para calcular el próximo visible
+        var next = _flujo.SiguienteNumero(ses.Cuestionario, 65);
+        if (next > 72)
+        {
+            ses.IndiceActual = 73;
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
+        }
+
+        ses.IndiceActual = next;
+        ses.AntiBackToken = Guid.NewGuid().ToString();
+        await _db.SaveChangesAsync();
+        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+    }
+
+    // POST: /Cuestionario/FiltroJefe
+    [HttpPost]
+    public async Task<IActionResult> FiltroJefe(FiltroJefeVM vm)
+    {
+        var ses = await _db.CuestionarioSesiones
+            .Include(s => s.Cuestionario)
+            .FirstOrDefaultAsync(s => s.Id == vm.SesionId);
+        if (ses is null) return NotFound();
+
+        ses.Cuestionario.EsJefe = vm.EsJefe;
+        await _db.SaveChangesAsync();
+
+        // Partimos desde 69 para calcular el próximo visible
+        var next = _flujo.SiguienteNumero(ses.Cuestionario, 69);
+        if (next > 72)
+        {
+            ses.IndiceActual = 73;
+            ses.Cuestionario.Fin = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
+        }
+
+        ses.IndiceActual = next;
+        ses.AntiBackToken = Guid.NewGuid().ToString();
+        await _db.SaveChangesAsync();
+        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+    }
+
 }

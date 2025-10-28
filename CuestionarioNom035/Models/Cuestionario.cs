@@ -6,6 +6,8 @@
         public Participante Participante { get; set; } = null!;
         public DateTime Inicio { get; set; } = DateTime.UtcNow;
         public DateTime? Fin { get; set; }
+        public int Anio { get; set; }
+
 
         // Importante: nullable porque el flujo pregunta antes de 65 y 69
         public bool? AtiendeClientes { get; set; } // filtro 65-68
