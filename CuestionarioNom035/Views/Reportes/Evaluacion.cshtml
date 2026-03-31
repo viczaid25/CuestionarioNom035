@@ -1,16 +1,28 @@
-﻿@model NOM35.Web.ViewModels.EvaluacionVM
+﻿@using CuestionarioNom035.Helpers
+@model NOM35.Web.ViewModels.EvaluacionVM
 @{
     ViewData["Title"] = "Evaluación del cuestionario";
-    var azul = "#2c5fa8";
+
+    // Color global basado en Cfinal (según rangos)
+    var cfinalColor = Nom035ColorHelper.ColorForFinal(Model.Cfinal);
+
+    // Colores por categoría y dominio (por promedio/valor de esta evaluación)
+    var catColors = Model.CatLabels
+        .Select((name, i) => Nom035ColorHelper.ColorForCategoria(name, Model.CatValues[i]))
+        .ToList();
+
+    var domColors = Model.DomLabels
+        .Select((name, i) => Nom035ColorHelper.ColorForDominio(name, Model.DomValues[i]))
+        .ToList();
 }
 
-<div class="card p-4 mb-4">
+<div class="card p-4 mb-4" style="border-left:8px solid @cfinalColor;">
     <h3 class="mb-3">Resultado global</h3>
     <div class="d-flex align-items-center gap-3">
-        <div class="p-2 rounded text-white" style="background-color:@Model.NivelGlobalColor">
+        <div class="p-2 rounded text-white" style="background-color:@cfinalColor">
             <strong>@Model.NivelGlobal</strong>
         </div>
-        <div>Calificación final (Cfinal): <strong>@Model.Cfinal</strong></div>
+        <div>Calificación final (Cfinal): <strong>@Model.Cfinal.ToString("0.00")</strong></div>
     </div>
 </div>
 
@@ -34,17 +46,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
         (function(){
-          const azul = '#2c5fa8';
-          const azulSuave = 'rgba(44,95,168,0.25)';
-          const grisBorde = 'rgba(44,95,168,0.4)';
+          const azulSuave = 'rgba(44,95,168,0.10)';
 
-          // Datos desde el modelo
           const catLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CatLabels));
           const catValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CatValues));
           const domLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomLabels));
           const domValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomValues));
 
-          // --- Barras: Categorías
+          const catColors = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(catColors));
+          const domColors = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(domColors));
+
+          // --- Barras: Categorías (color por barra)
           new Chart(document.getElementById('barCategorias'), {
             type: 'bar',
             data: {
@@ -52,8 +64,8 @@
               datasets: [{
                 label: 'Ccat',
                 data: catValues,
-                backgroundColor: azulSuave,
-                borderColor: azul,
+                backgroundColor: catColors,
+                borderColor: catColors,
                 borderWidth: 2,
                 borderRadius: 8
               }]
@@ -71,7 +83,7 @@
             }
           });
 
-          // --- Radar: Dominios
+          // --- Radar: Dominios (color por punto)
           new Chart(document.getElementById('radarDominios'), {
             type: 'radar',
             data: {
@@ -81,11 +93,11 @@
                 data: domValues,
                 fill: true,
                 backgroundColor: azulSuave,
-                borderColor: azul,
-                pointBackgroundColor: azul,
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: azul
+                borderColor: '#2c5fa8',
+                pointBackgroundColor: domColors,
+                pointBorderColor: domColors,
+                pointRadius: 4,
+                pointHoverRadius: 6
               }]
             },
             options: {

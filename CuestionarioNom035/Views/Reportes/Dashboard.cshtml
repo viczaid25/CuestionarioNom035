@@ -1,7 +1,12 @@
-﻿@model NOM35.Web.ViewModels.ReportesDashboardVM
+﻿@using CuestionarioNom035.ViewModels
+@using CuestionarioNom035.Helpers
+
+@model ReportesDashboardVM
 @{
     ViewData["Title"] = "Dashboard de Reportes NOM-35";
     var azul = "#2c5fa8";
+    var cfinalColor = Nom035ColorHelper.ColorForFinal(Model.CfinalPromedio);
+    
 }
 
 <div class="card p-3 mb-3">
@@ -33,12 +38,16 @@ else
         <div class="h4 mb-0">@Model.TotalCuestionarios</div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card p-3">
-        <div class="text-muted">Cfinal promedio</div>
-        <div class="h4 mb-0">@Model.CfinalPromedio.ToString("0.00")</div>
-      </div>
-    </div>
+        <div class="col-md-3">
+            <div class="card p-3" style="border-left:8px solid @cfinalColor;">
+                <div class="text-muted">Cfinal promedio</div>
+                <div class="h4 mb-0">
+                    <span class="badge" style="background:@cfinalColor;color:#fff;">
+                        @Model.CfinalPromedio.ToString("0.00")
+                    </span>
+                </div>
+            </div>
+        </div>
     <div class="col-md-3">
       <div class="card p-3">
         <div class="text-muted">IDL (prom.)</div>
@@ -94,19 +103,25 @@ else
                 </tr>
               </thead>
               <tbody>
-                @foreach (var e in Model.Evaluaciones)
-                {
-                  <tr>
-                    <td>@e.Id</td>
-                    <td>@e.NumeroEmpleado</td>
-                    <td>@e.TipoEmpleado</td>
-                    <td>@e.Fecha</td>
-                    <td>@e.Cfinal.ToString("0.00")</td>
-                    <td>
-                      <a class="btn btn-sm" href="/Reportes/Evaluacion/@e.Id">Ver</a>
-                    </td>
-                  </tr>
-                }
+                                @foreach (var e in Model.Evaluaciones)
+                                {
+                                    var rowColor = Nom035ColorHelper.ColorForFinal(e.Cfinal);
+
+                                    <tr>
+                                        <td>@e.Id</td>
+                                        <td>@e.NumeroEmpleado</td>
+                                        <td>@e.TipoEmpleado</td>
+                                        <td>@e.Fecha</td>
+                                        <td>
+                                            <span class="badge" style="background:@rowColor;color:#fff;">
+                                                @e.Cfinal.ToString("0.00")
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-sm" href="/Reportes/Evaluacion/@e.Id">Ver</a>
+                                        </td>
+                                    </tr>
+                                }
               </tbody>
             </table>
           </div>
@@ -115,6 +130,17 @@ else
     </div>
   }
 }
+
+@{
+    var catColors = Model.CatLabels
+        .Select((name, i) => Nom035ColorHelper.ColorForCategoria(name, Model.CatValues[i]))
+        .ToList();
+
+    var domColors = Model.DomLabels
+        .Select((name, i) => Nom035ColorHelper.ColorForDominio(name, Model.DomValues[i]))
+        .ToList();
+}
+
 
 @section Scripts{
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -128,57 +154,66 @@ else
   const domLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomLabels));
   const domValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DomValues));
 
+  const catColors = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(catColors));
+  const domColors = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(domColors));
+
+
   // Barras Categorías
-  new Chart(document.getElementById('barCategorias'), {
-    type: 'bar',
-    data: {
-      labels: catLabels,
-      datasets: [{
-        label: 'Ccat (prom.)',
-        data: catValues,
-        backgroundColor: azulSuave,
-        borderColor: azul,
-        borderWidth: 2,
-        borderRadius: 8
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#333' } },
-        y: { beginAtZero: true, grid: { color: '#e5ecf4' }, ticks: { color: '#333' } }
-      }
-    }
-  });
+        new Chart(document.getElementById('barCategorias'), {
+          type: 'bar',
+          data: {
+            labels: catLabels,
+            datasets: [{
+              label: 'Ccat (prom.)',
+              data: catValues,
+              backgroundColor: catColors,   // <-- aquí
+              borderColor: catColors,       // <-- aquí
+              borderWidth: 2,
+              borderRadius: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: '#333' } },
+              y: { beginAtZero: true, grid: { color: '#e5ecf4' }, ticks: { color: '#333' } }
+            }
+          }
+        });
+
 
   // Radar Dominios
-  new Chart(document.getElementById('radarDominios'), {
-    type: 'radar',
-    data: {
-      labels: domLabels,
-      datasets: [{
-        label: 'Cdom (prom.)',
-        data: domValues,
-        fill: true,
-        backgroundColor: azulSuave,
-        borderColor: azul,
-        pointBackgroundColor: azul
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        r: {
-          angleLines: { color: '#e5ecf4' },
-          grid: { color: '#e5ecf4' },
-          pointLabels: { color: '#333' },
-          ticks: { showLabelBackdrop: false, color: '#666' }
-        }
-      }
-    }
-  });
+          new Chart(document.getElementById('radarDominios'), {
+          type: 'radar',
+          data: {
+            labels: domLabels,
+            datasets: [{
+              label: 'Cdom (prom.)',
+              data: domValues,
+              fill: true,
+              backgroundColor: 'rgba(44,95,168,0.10)', // suave
+              borderColor: '#2c5fa8',
+              pointBackgroundColor: domColors,         // <-- cada punto
+              pointBorderColor: domColors,
+              pointRadius: 4,
+              pointHoverRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              r: {
+                angleLines: { color: '#e5ecf4' },
+                grid: { color: '#e5ecf4' },
+                pointLabels: { color: '#333' },
+                ticks: { showLabelBackdrop: false, color: '#666' }
+              }
+            }
+          }
+        });
+
 })();
 </script>
 }

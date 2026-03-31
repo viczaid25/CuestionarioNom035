@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CuestionarioNom035.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NOM35.Web.Data;
-using NOM35.Web.Models;
+using CuestionarioNom035.Models;
+using CuestionarioNom035.ViewModels;
 using NOM35.Web.Services;
 using NOM35.Web.ViewModels;
-
-namespace NOM35.Web.Controllers;
+using NOM35.Web.Models;
+namespace CuestionarioNom035.Controllers;
 
 public class CuestionarioController : Controller
 {
@@ -20,42 +21,43 @@ public class CuestionarioController : Controller
     [HttpGet]
     public IActionResult Inicio()
     {
-        var vm = new InicioVM();
+        var vm = new InicioVM
+        {
+            AreasDisponibles = CatalogoAreas.Areas()
+                .Select(a => new SelectListItem { Text = a, Value = a })
+                .ToList()
+        };
+
         return View(vm);
     }
+
 
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Inicio(InicioVM vm)
     {
-        // Reponer el select si vuelves con errores
+        // repoblar áreas por si hay error
         if (vm.AreasDisponibles == null || vm.AreasDisponibles.Count == 0)
         {
-            vm.AreasDisponibles = new()
-        {
-            new SelectListItem { Text = "MELX", Value = "MELX" },
-            new SelectListItem { Text = "SAL",  Value = "SAL" },
-            new SelectListItem { Text = "IT",   Value = "IT"  },
-            new SelectListItem { Text = "PD",   Value = "PD"  },
-            new SelectListItem { Text = "LGL",  Value = "LGL" },
-            new SelectListItem { Text = "PRC",  Value = "PRC" },
-            new SelectListItem { Text = "TOP",  Value = "TOP" },
-            new SelectListItem { Text = "HR",   Value = "HR"  },
-            new SelectListItem { Text = "FIN",  Value = "FIN" },
-            new SelectListItem { Text = "QC",   Value = "QC"  },
-            new SelectListItem { Text = "PC",   Value = "PC"  },
-            new SelectListItem { Text = "FC",   Value = "FC"  }
-        };
+            vm.AreasDisponibles = CatalogoAreas.Areas()
+                .Select(a => new SelectListItem { Text = a, Value = a }).ToList();
         }
 
         if (!ModelState.IsValid) return View(vm);
 
-        var permitidas = new HashSet<string>(new[]
-        { "MELX","SAL","IT","PD","LGL","PRC","TOP","HR","FIN","QC","PC","FC" },
-            StringComparer.OrdinalIgnoreCase);
-
-        if (!permitidas.Contains(vm.Area))
+        // Validar que el área exista en catálogo
+        var areasPermitidas = new HashSet<string>(CatalogoAreas.Areas(), StringComparer.OrdinalIgnoreCase);
+        if (!areasPermitidas.Contains(vm.Area))
         {
             ModelState.AddModelError(nameof(vm.Area), "Área no válida.");
+            return View(vm);
+        }
+
+        // Validar subárea contra el área seleccionada
+        var subareas = CatalogoAreas.Subareas(vm.Area);
+        var okSub = subareas.Any(s => string.Equals(s, vm.Subarea, StringComparison.OrdinalIgnoreCase));
+        if (!okSub)
+        {
+            ModelState.AddModelError(nameof(vm.Subarea), "Subárea no válida para el área seleccionada.");
             return View(vm);
         }
 
@@ -65,7 +67,7 @@ public class CuestionarioController : Controller
             return View(vm);
         }
 
-        // Obtén o crea el participante
+        // Crear/obtener participante
         var part = await _db.Participantes
             .FirstOrDefaultAsync(p => p.NumeroEmpleado == vm.NumeroEmpleado);
 
@@ -75,6 +77,7 @@ public class CuestionarioController : Controller
             {
                 NumeroEmpleado = vm.NumeroEmpleado,
                 AreaNombre = vm.Area,
+                SubareaNombre = vm.Subarea,
                 TipoEmpleado = vm.TipoEmpleado.Value
             };
             _db.Participantes.Add(part);
@@ -82,8 +85,9 @@ public class CuestionarioController : Controller
         }
         else
         {
-            // si quieres actualizar área/tipo al reingresar:
+            // si quieres actualizar datos al reingresar
             part.AreaNombre = vm.Area;
+            part.SubareaNombre = vm.Subarea;
             part.TipoEmpleado = vm.TipoEmpleado.Value;
             await _db.SaveChangesAsync();
         }
@@ -91,7 +95,7 @@ public class CuestionarioController : Controller
         var c = new Cuestionario
         {
             ParticipanteId = part.Id,
-            Anio = DateTime.Now.Year   // o DateTime.UtcNow.Year
+            Anio = DateTime.Now.Year
         };
         _db.Cuestionarios.Add(c);
         await _db.SaveChangesAsync();
@@ -102,6 +106,7 @@ public class CuestionarioController : Controller
 
         return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
     }
+
 
     // Helper para rellenar el Select si regresas la vista con errores
     private static List<SelectListItem> ObtenerAreasFijas() => new()

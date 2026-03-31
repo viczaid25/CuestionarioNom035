@@ -1,5 +1,6 @@
 ﻿// Ruta: NOM35.Web/Data/Seed/InitialSeeder.cs
 using System.Text;
+using CuestionarioNom035.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NOM35.Web.Models;

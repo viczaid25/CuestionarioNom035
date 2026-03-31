@@ -3,21 +3,29 @@
     ViewData["Title"] = "Inicio del Cuestionario";
 }
 
-<div class="card p-4 mx-auto" style="max-width: 520px;">
+<div class="card p-4 mx-auto" style="max-width: 560px;">
     <h3 class="text-center mb-4">Inicio del Cuestionario NOM-35</h3>
     <form asp-action="Inicio" method="post">
         <div class="mb-3">
             <label class="form-label">Número de empleado</label>
-            <input asp-for="NumeroEmpleado" class="form-control" placeholder="Ej. 1025" />
+            <input asp-for="NumeroEmpleado" class="form-control" />
             <span asp-validation-for="NumeroEmpleado" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Área</label>
-            <select asp-for="Area" asp-items="Model.AreasDisponibles" class="form-select">
+            <select asp-for="Area" asp-items="Model.AreasDisponibles" class="form-select" id="selArea">
                 <option value="">-- Selecciona un área --</option>
             </select>
             <span asp-validation-for="Area" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Subárea</label>
+            <select asp-for="Subarea" class="form-select" id="selSubarea">
+                <option value="">-- Selecciona una subárea --</option>
+            </select>
+            <span asp-validation-for="Subarea" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
@@ -35,6 +43,36 @@
             <span asp-validation-for="TipoEmpleado" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn w-100">Comenzar</button>
+        <button class="btn w-100">Comenzar</button>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        async function cargarSubareas(area, selected){
+          const sel = document.getElementById('selSubarea');
+          sel.innerHTML = '<option value="">-- Selecciona una subárea --</option>';
+          if(!area) return;
+          const res = await fetch(`/api/areas/subareas?area=${encodeURIComponent(area)}`);
+          const data = await res.json();
+          data.forEach(x => {
+            const opt = document.createElement('option');
+            opt.value = x; opt.textContent = x;
+            if(selected && selected === x) opt.selected = true;
+            sel.appendChild(opt);
+          });
+        }
+        document.getElementById('selArea')?.addEventListener('change', (e)=>{
+          cargarSubareas(e.target.value, null);
+        });
+
+        // Si vuelves con validación fallida, intenta prellenar subárea (Model binding)
+        window.addEventListener('DOMContentLoaded', ()=>{
+          const area = document.getElementById('selArea')?.value;
+          const suba = '@Model.Subarea';
+          if(area){
+            cargarSubareas(area, suba);
+          }
+        });
+    </script>
+}

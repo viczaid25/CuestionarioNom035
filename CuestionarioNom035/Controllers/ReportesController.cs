@@ -2,15 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NOM35.Web.Data;
 using NOM35.Web.Models;
 using NOM35.Web.Services;
 using NOM35.Web.ViewModels;
 using System.Linq;
+using CuestionarioNom035.ViewModels;
+using CuestionarioNom035.Data;
+using Microsoft.AspNetCore.Authorization;
 
-namespace NOM35.Web.Controllers
+
+namespace CuestionarioNom035.Controllers
 {
     [Route("Reportes")]
+    [Authorize(Policy = "CanViewReports")]
     public class ReportesController : Controller
     {
         private readonly Nom35DbContext _db;
@@ -96,17 +100,13 @@ namespace NOM35.Web.Controllers
         // GET /Reportes/Dashboard?anio=2025&area=IT (agregado)
         // ----------------------------------------------------
         [HttpGet("Dashboard")]
-        public async Task<IActionResult> Dashboard(int? anio, string? area)
+        public async Task<IActionResult> Dashboard(int? anio, string? area, string? subarea)
         {
-            // Áreas fijas (catálogo simple)
-            var areasFijas = new List<string> { "MELX", "SAL", "IT", "PD", "LGL", "PRC", "TOP", "HR", "FIN", "QC", "PC", "FC" };
-
-            // Años (últimos 5, incluyendo actual)
+            var areasFijas = CatalogoAreas.Areas();
             int anioActual = DateTime.Now.Year;
             int anioFiltro = anio ?? anioActual;
             var anios = Enumerable.Range(anioActual - 4, 5).Reverse().ToList();
 
-            // Query base
             var query = _db.Cuestionarios
                 .Include(c => c.Participante)
                 .Include(c => c.Respuestas)
@@ -119,63 +119,64 @@ namespace NOM35.Web.Controllers
             if (!string.IsNullOrWhiteSpace(area))
                 query = query.Where(c => c.Participante.AreaNombre == area);
 
+            if (!string.IsNullOrWhiteSpace(subarea))
+                query = query.Where(c => c.Participante.SubareaNombre == subarea);
+
             var cuestionarios = await query.ToListAsync();
 
             var vm = new ReportesDashboardVM
             {
                 Area = area,
+                Subarea = subarea,
                 Anio = anioFiltro,
                 AreasDisponibles = areasFijas,
+                SubareasDisponibles = string.IsNullOrWhiteSpace(area) ? new() : CatalogoAreas.Subareas(area),
                 AniosDisponibles = anios,
                 TotalCuestionarios = cuestionarios.Count
             };
 
-            // Poblar selects (para Tag Helpers asp-items)
+            // Selects
             vm.AniosSelect = vm.AniosDisponibles
-                .Select(y => new SelectListItem { Text = y.ToString(), Value = y.ToString(), Selected = (vm.Anio == y) })
+                .Select(y => new SelectListItem { Text = y.ToString(), Value = y.ToString(), Selected = vm.Anio == y })
                 .ToList();
 
             vm.AreasSelect = new List<SelectListItem> { new() { Text = "(Todas)", Value = "" } };
-            vm.AreasSelect.AddRange(
-                vm.AreasDisponibles.Select(a => new SelectListItem { Text = a, Value = a, Selected = (vm.Area == a) })
-            );
+            vm.AreasSelect.AddRange(vm.AreasDisponibles.Select(a => new SelectListItem { Text = a, Value = a, Selected = vm.Area == a }));
 
-            // Si no hay datos, solo mostramos filtros y tarjetas vacías
-            if (cuestionarios.Count == 0)
-                return View(vm);
+            vm.SubareasSelect = new List<SelectListItem> { new() { Text = "(Todas)", Value = "" } };
+            if (!string.IsNullOrWhiteSpace(area))
+            {
+                vm.SubareasSelect.AddRange(vm.SubareasDisponibles.Select(s =>
+                    new SelectListItem { Text = s, Value = s, Selected = vm.Subarea == s }));
+            }
 
-            // Cfinal por cuestionario
-            var cfinales = cuestionarios.Select(c =>
-                c.Respuestas.Sum(r => _score.MapearValor(r.NumeroPregunta, r.Opcion))
-            ).ToList();
+            if (cuestionarios.Count == 0) return View(vm);
 
+            // Cálculos (igual que antes) …
+            var cfinales = cuestionarios
+                .Select(c => c.Respuestas.Sum(r => _score.MapearValor(r.NumeroPregunta, r.Opcion))).ToList();
             vm.CfinalPromedio = cfinales.Average();
 
-            // Categorías (promedio de sumas por cuestionario)
             var categorias = cuestionarios
                 .SelectMany(c => c.Respuestas.GroupBy(r => r.Pregunta.Dimension.Dominio.Categoria.Nombre)
                     .Select(g => new { Categoria = g.Key, Suma = g.Sum(r => _score.MapearValor(r.NumeroPregunta, r.Opcion)) }))
                 .GroupBy(x => x.Categoria)
-                .Select(g => new { Nombre = g.Key, Promedio = g.Average(x => x.Suma) })
-                .OrderBy(x => x.Nombre)
-                .ToList();
+                .Select(g => new { Nombre = g.Key, Prom = g.Average(x => x.Suma) })
+                .OrderBy(x => x.Nombre).ToList();
 
             vm.CatLabels = categorias.Select(x => x.Nombre).ToList();
-            vm.CatValues = categorias.Select(x => Math.Round(x.Promedio, 2)).ToList();
+            vm.CatValues = categorias.Select(x => Math.Round(x.Prom, 2)).ToList();
 
-            // Dominios (promedio de sumas por cuestionario)
             var dominios = cuestionarios
                 .SelectMany(c => c.Respuestas.GroupBy(r => r.Pregunta.Dimension.Dominio.Nombre)
                     .Select(g => new { Dominio = g.Key, Suma = g.Sum(r => _score.MapearValor(r.NumeroPregunta, r.Opcion)) }))
                 .GroupBy(x => x.Dominio)
-                .Select(g => new { Nombre = g.Key, Promedio = g.Average(x => x.Suma) })
-                .OrderBy(x => x.Nombre)
-                .ToList();
+                .Select(g => new { Nombre = g.Key, Prom = g.Average(x => x.Suma) })
+                .OrderBy(x => x.Nombre).ToList();
 
             vm.DomLabels = dominios.Select(x => x.Nombre).ToList();
-            vm.DomValues = dominios.Select(x => Math.Round(x.Promedio, 2)).ToList();
+            vm.DomValues = dominios.Select(x => Math.Round(x.Prom, 2)).ToList();
 
-            // Split por tipo de empleado
             var idl = cuestionarios.Where(c => c.Participante.TipoEmpleado == TipoEmpleado.IDL).ToList();
             var dl = cuestionarios.Where(c => c.Participante.TipoEmpleado == TipoEmpleado.DL).ToList();
 
@@ -188,16 +189,15 @@ namespace NOM35.Web.Controllers
             vm.CfinalPromedioDL = dl.Count == 0 ? 0 :
                 dl.Select(c => c.Respuestas.Sum(r => _score.MapearValor(r.NumeroPregunta, r.Opcion))).Average();
 
-            // Evaluaciones individuales SOLO cuando filtras por área (y el año ya viene siempre)
             if (!string.IsNullOrWhiteSpace(area))
             {
-                vm.Evaluaciones = cuestionarios
-                    .OrderByDescending(c => c.Inicio)
+                vm.Evaluaciones = cuestionarios.OrderByDescending(c => c.Inicio)
                     .Select(c => new ReportesDashboardVM.ItemEvaluacion
                     {
                         Id = c.Id,
                         NumeroEmpleado = c.Participante.NumeroEmpleado,
                         Area = c.Participante.AreaNombre,
+                        Subarea = c.Participante.SubareaNombre,
                         TipoEmpleado = c.Participante.TipoEmpleado.ToString(),
                         Fecha = c.Inicio.ToString("yyyy-MM-dd"),
                         Cfinal = c.Respuestas.Sum(r => _score.MapearValor(r.NumeroPregunta, r.Opcion))
@@ -207,5 +207,6 @@ namespace NOM35.Web.Controllers
 
             return View(vm);
         }
+
     }
 }

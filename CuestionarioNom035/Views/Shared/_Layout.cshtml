@@ -36,29 +36,32 @@
                     </li>
 
                     <!-- Reportes -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="repDrop" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">Reportes</a>
-                        <ul class="dropdown-menu" aria-labelledby="repDrop">
-                            <li>
-                                <a class="dropdown-item" asp-controller="Reportes" asp-action="Validacion">
-                                    Validación de carga
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Reportes" asp-action="Dashboard">Dashboard</a>
-                    </li>
+                    @if (User?.Identity?.IsAuthenticated == true && User.HasClaim("CanViewReports", "true"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="repDrop" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">Reportes</a>
+                            <ul class="dropdown-menu" aria-labelledby="repDrop">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Reportes" asp-action="Validacion">Validación de carga</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Reportes" asp-action="Dashboard">Dashboard</a>
+                        </li>
+                    }
+
 
                 </ul>
 
                 <!-- Ir a Evaluación por ID -->
-                <form class="d-flex" role="search" onsubmit="return goEvalById(event)">
+                @* <form class="d-flex" role="search" onsubmit="return goEvalById(event)">
                     <input class="form-control me-2" type="number" min="1" id="evalId" placeholder="ID cuestionario"
                            aria-label="ID cuestionario">
                     <button class="btn btn-light" type="submit">Evaluación</button>
-                </form>
+                </form> *@
             </div>
         </div>
     </nav>

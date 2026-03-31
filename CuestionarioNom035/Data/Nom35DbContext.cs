@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NOM35.Web.Models;
 
-namespace NOM35.Web.Data;
+namespace CuestionarioNom035.Data;
 
 public class Nom35DbContext : DbContext
 {

@@ -1,7 +1,7 @@
 ﻿// Ruta: NOM35.Web/Extensions/HostExtensions.cs
+using CuestionarioNom035.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NOM35.Web.Data;
 using NOM35.Web.Data.Seed;
 
 namespace NOM35.Web.Extensions;

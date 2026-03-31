@@ -15,22 +15,11 @@ namespace NOM35.Web.ViewModels
         [Display(Name = "Área")]
         public string Area { get; set; } = "";
 
-        // Select fijo de áreas (ya lo tenías)
-        public List<SelectListItem> AreasDisponibles { get; set; } = new()
-        {
-            new SelectListItem { Text = "MELX", Value = "MELX" },
-            new SelectListItem { Text = "SAL",  Value = "SAL" },
-            new SelectListItem { Text = "IT",   Value = "IT"  },
-            new SelectListItem { Text = "PD",   Value = "PD"  },
-            new SelectListItem { Text = "LGL",  Value = "LGL" },
-            new SelectListItem { Text = "PRC",  Value = "PRC" },
-            new SelectListItem { Text = "TOP",  Value = "TOP" },
-            new SelectListItem { Text = "HR",   Value = "HR"  },
-            new SelectListItem { Text = "FIN",  Value = "FIN" },
-            new SelectListItem { Text = "QC",   Value = "QC"  },
-            new SelectListItem { Text = "PC",   Value = "PC"  },
-            new SelectListItem { Text = "FC",   Value = "FC"  }
-        };
+        [Required(ErrorMessage = "La subárea es requerida.")]
+        [Display(Name = "Subárea")]
+        public string Subarea { get; set; } = "";
+
+        public List<SelectListItem> AreasDisponibles { get; set; } = new();
 
         // NUEVO: tipo empleado
         [Required(ErrorMessage = "Selecciona el tipo de empleado.")]
