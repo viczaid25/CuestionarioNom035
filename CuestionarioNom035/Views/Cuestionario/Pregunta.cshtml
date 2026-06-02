@@ -13,9 +13,32 @@
         <input type="hidden" asp-for="Numero" />
 
         <h5 class="mb-2 text-secondary">Pregunta @Model.Numero</h5>
-        <h4 class="mb-4">@Model.Texto</h4>
 
-        <div class="mb-4">
+        <div class="d-flex align-items-start gap-2 mb-4">
+            <h4 class="mb-0 flex-grow-1" id="textoPregunta">@Model.Texto</h4>
+            <button type="button" id="btnEscuchar" class="btn-escuchar"
+                    title="Escuchar pregunta y opciones" aria-label="Escuchar pregunta">
+
+                <svg id="iconoSonido" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                </svg>
+
+                <svg id="iconoPausa" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     style="display:none;">
+                    <rect x="6" y="4" width="4" height="16" />
+                    <rect x="14" y="4" width="4" height="16" />
+                </svg>
+
+            </button>
+        </div>
+
+        <div class="mb-4" id="listaOpciones">
             
 
             @foreach (NOM35.Web.Models.OpcionLikert opt in Enum.GetValues(typeof(NOM35.Web.Models.OpcionLikert)))
@@ -39,11 +62,26 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/lector-pregunta.js"></script>
     <script>
         history.pushState(null, document.title, location.href);
         window.addEventListener('popstate', function () {
           history.pushState(null, document.title, location.href);
         });
+        function initLector() {
+        window.lector = new LectorPregunta({
+        btnId:            'btnEscuchar',
+        textoPreguntaId:  'textoPregunta',
+        opcionesSelector: '#listaOpciones .btn-option'
+        });
+        }
+
+        
+        if (window.speechSynthesis.getVoices().length > 0) {
+        initLector();
+        } else {
+        window.speechSynthesis.addEventListener('voiceschanged', initLector, { once: true });
+        }
         document.getElementById('formPregunta')?.addEventListener('submit', function(){
           const btn = document.getElementById('btnContinuar');
           if (btn){ btn.disabled = true; btn.innerText = 'Guardando...'; }

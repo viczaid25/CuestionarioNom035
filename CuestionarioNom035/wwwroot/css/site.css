@@ -88,3 +88,37 @@ label {
         border-color: var(--color-primario);
         background-color: #f0f5fc;
     }
+
+.btn-escuchar {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid #c7c9e0;
+    background: transparent;
+    color: #6c6fa8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    margin-top: 2px;
+    padding: 0;
+}
+
+    .btn-escuchar:hover {
+        background: #f0f2ff;
+        color: #3B4CC0;
+        border-color: #3B4CC0;
+    }
+
+    .btn-escuchar.hablando {
+        background: #3B4CC0;
+        color: white;
+        border-color: #3B4CC0;
+    }
+
+.btn-option.leyendo {
+    border-color: #3B4CC0 !important;
+    background: #f0f2ff !important;
+}
