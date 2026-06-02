@@ -166,7 +166,6 @@ C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\ne
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\swae.build.ex.cache
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\Cuestion.C6A06DE7.Up2Date
 C:\Users\dm45207\source\repos\CuestionarioNom035\CuestionarioNom035\obj\Debug\net8.0\CuestionarioNom035.dll
