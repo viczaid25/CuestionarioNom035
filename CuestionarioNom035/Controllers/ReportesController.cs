@@ -10,12 +10,13 @@ using CuestionarioNom035.ViewModels;
 using CuestionarioNom035.Data;
 using Microsoft.AspNetCore.Authorization;
 using CuestionarioNom035.Helpers;
+using CuestionarioNom035.Auth;
 
 
 namespace CuestionarioNom035.Controllers
 {
     [Route("Reportes")]
-    [Authorize(Policy = "CanViewReports")]
+    [Authorize(Policy = Permisos.Reportes)]
     public class ReportesController : Controller
     {
         private readonly Nom35DbContext _db;
@@ -214,6 +215,31 @@ namespace CuestionarioNom035.Controllers
             }
 
             return View(vm);
+        }
+
+        // ------------------------------------------------------------------
+        // GET /Reportes/SeguimientoAts — casos ATS en seguimiento que el
+        // colaborador aceptó comunicar a RH. Solo se muestra que existe el caso.
+        // ------------------------------------------------------------------
+        [HttpGet("SeguimientoAts")]
+        public async Task<IActionResult> SeguimientoAts()
+        {
+            var casos = await _db.AtsEvaluaciones
+                .Where(e => e.Estado == AtsEstado.Revisado
+                         && e.AceptaComunicarRH == true
+                         && (e.SeguimientoExterno == true || e.SeguimientoInterno == true))
+                .OrderByDescending(e => e.FechaRevision)
+                .Select(e => new AtsSeguimientoRhVM
+                {
+                    Id = e.Id,
+                    Nomina = e.Nomina,
+                    NombreCompleto = e.NombreCompleto,
+                    Departamento = e.Departamento,
+                    FechaRevision = e.FechaRevision!.Value
+                })
+                .ToListAsync();
+
+            return View(casos);
         }
 
     }

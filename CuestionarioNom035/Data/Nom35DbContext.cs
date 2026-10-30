@@ -15,6 +15,8 @@ public class Nom35DbContext : DbContext
     public DbSet<Cuestionario> Cuestionarios => Set<Cuestionario>();
     public DbSet<CuestionarioSesion> CuestionarioSesiones => Set<CuestionarioSesion>();
     public DbSet<Respuesta> Respuestas => Set<Respuesta>();
+    public DbSet<AtsEvaluacion> AtsEvaluaciones => Set<AtsEvaluacion>();
+    public DbSet<AtsRespuesta> AtsRespuestas => Set<AtsRespuesta>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -31,6 +33,34 @@ public class Nom35DbContext : DbContext
         mb.Entity<CuestionarioSesion>()
           .Property(s => s.Token)
           .HasDefaultValueSql("NEWID()");
+
+        // Diagnóstico ATS
+        mb.Entity<AtsEvaluacion>(e =>
+        {
+            e.Property(x => x.Nomina).HasMaxLength(20);
+            e.Property(x => x.PcLoginId).HasMaxLength(50);
+            e.Property(x => x.NombreCompleto).HasMaxLength(150);
+            e.Property(x => x.Departamento).HasMaxLength(100);
+            e.Property(x => x.Posicion).HasMaxLength(100);
+            e.Property(x => x.Antiguedad).HasMaxLength(50);
+            e.Property(x => x.ComentarioDarDetalles).HasMaxLength(500);
+            e.Property(x => x.DescripcionSuceso).HasMaxLength(4000);
+            e.Property(x => x.ComentarioComunicarRH).HasMaxLength(500);
+            e.Property(x => x.MotivoDecision).HasMaxLength(1000);
+            e.Property(x => x.RevisadoPor).HasMaxLength(50);
+            e.HasIndex(x => x.PcLoginId);
+            e.HasIndex(x => x.Estado);
+        });
+
+        mb.Entity<AtsRespuesta>()
+          .HasOne(r => r.Evaluacion)
+          .WithMany(e => e.Respuestas)
+          .HasForeignKey(r => r.EvaluacionId)
+          .OnDelete(DeleteBehavior.Cascade);
+
+        mb.Entity<AtsRespuesta>()
+          .HasIndex(r => new { r.EvaluacionId, r.Seccion, r.Numero })
+          .IsUnique();
 
         // Una sola respuesta por pregunta en cada cuestionario
         mb.Entity<Respuesta>()

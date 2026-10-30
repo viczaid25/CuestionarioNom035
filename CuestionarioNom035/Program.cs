@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using NOM35.Web.Services;
 using NOM35.Web.Extensions;
+using CuestionarioNom035.Auth;
 using CuestionarioNom035.Data;
-using CuestionarioNom035.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,29 +19,34 @@ builder.Services.AddDbContext<Nom35DbContext>(options =>
 builder.Services.AddScoped<IFlujoService, FlujoService>();
 builder.Services.AddScoped<IScoringService, ScoringService>();
 
-// ✅ AD (LDAP)
-builder.Services.AddSingleton(new ActiveDirectoryService("ad.meax.mx"));
+// Login: MEAX One (SSO) o, en desarrollo, usuario de prueba
+var modoDev = DevAuth.Habilitado(builder.Environment, builder.Configuration);
+if (modoDev) builder.Services.AddDevAuth();
+else builder.Services.AddHubSso(builder.Configuration);
 
-// ✅ Auth Cookies (solo para Reportes)
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.Cookie.Name = "NOM35.Auth";
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/Denied";
-        options.SlidingExpiration = true;
-        options.ExpireTimeSpan = TimeSpan.FromHours(10);
-    });
+// Con sesión pero sin permiso (Reportes / Servicio Médico): página propia
+builder.Services.PostConfigure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme,
+    o => o.AccessDeniedPath = "/Home/SinPermiso");
 
-// ✅ Policy: Reportes
+// Todo pide sesión salvo lo marcado con [AllowAnonymous] (Guía III, que es anónima)
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("CanViewReports", p => p.RequireClaim("CanViewReports", "true"));
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    Permisos.AgregarPoliticas(options, builder.Configuration);
 });
+
+// Llaves de DataProtection: solo si la carpeta existe en el servidor con permiso de
+// escritura para el App Pool; si no, vacío (las sesiones se renuevan solas por SSO).
+if (builder.Configuration["DataProtection:KeysPath"] is { Length: > 0 } keys)
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(keys))
+        .SetApplicationName(HubSso.SystemCode(builder.Configuration));
 
 var app = builder.Build();
 
 await app.EnsureMigratedAndSeededAsync();
+
+if (app.Configuration["App:PathBase"] is { Length: > 0 } pathBase) app.UsePathBase(pathBase);
 
 if (!app.Environment.IsDevelopment())
 {
@@ -47,25 +54,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseAuthentication();   // ✅ IMPORTANTE
+app.UseAuthentication();
+if (!modoDev) app.UseHubSso(app.Configuration);
 app.UseAuthorization();
+
+if (!modoDev) app.MapHubSsoLogout(app.Configuration);
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Cuestionario}/{action=Inicio}/{id?}");
-
-app.MapControllerRoute(
-    name: "reportes",
-    pattern: "Reportes/{action=Validacion}/{id?}",
-    defaults: new { controller = "Reportes" });
-
-app.MapControllerRoute(
-    name: "account",
-    pattern: "Account/{action=Login}/{id?}",
-    defaults: new { controller = "Account" });
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

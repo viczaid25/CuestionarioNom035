@@ -22,6 +22,137 @@ namespace CuestionarioNom035.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("NOM35.Web.Models.AtsEvaluacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool?>("AceptaComunicarRH")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("AceptaDarDetalles")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Antiguedad")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ComentarioComunicarRH")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ComentarioDarDetalles")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool?>("DecisionAcudir")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Departamento")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DescripcionSuceso")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<int>("Edad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("FechaRevision")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Fin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Inicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MotivoDecision")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Nomina")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Paso")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PcLoginId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Posicion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RevisadoPor")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool?>("SeguimientoExterno")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("SeguimientoInterno")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("TipoEvaluacion")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Estado");
+
+                    b.HasIndex("PcLoginId");
+
+                    b.ToTable("AtsEvaluaciones");
+                });
+
+            modelBuilder.Entity("NOM35.Web.Models.AtsRespuesta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EvaluacionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Seccion")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Si")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EvaluacionId", "Seccion", "Numero")
+                        .IsUnique();
+
+                    b.ToTable("AtsRespuestas");
+                });
+
             modelBuilder.Entity("NOM35.Web.Models.Categoria", b =>
                 {
                     b.Property<int>("Id")
@@ -246,6 +377,17 @@ namespace CuestionarioNom035.Migrations
                     b.ToTable("Respuestas");
                 });
 
+            modelBuilder.Entity("NOM35.Web.Models.AtsRespuesta", b =>
+                {
+                    b.HasOne("NOM35.Web.Models.AtsEvaluacion", "Evaluacion")
+                        .WithMany("Respuestas")
+                        .HasForeignKey("EvaluacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Evaluacion");
+                });
+
             modelBuilder.Entity("NOM35.Web.Models.Cuestionario", b =>
                 {
                     b.HasOne("NOM35.Web.Models.Participante", "Participante")
@@ -318,6 +460,11 @@ namespace CuestionarioNom035.Migrations
                     b.Navigation("Cuestionario");
 
                     b.Navigation("Pregunta");
+                });
+
+            modelBuilder.Entity("NOM35.Web.Models.AtsEvaluacion", b =>
+                {
+                    b.Navigation("Respuestas");
                 });
 
             modelBuilder.Entity("NOM35.Web.Models.Categoria", b =>

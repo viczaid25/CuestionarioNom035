@@ -1,0 +1,68 @@
+@model NOM35.Web.ViewModels.AtsDatosVM
+@{
+    ViewData["Title"] = "Diagnóstico ATS";
+}
+
+<div class="card p-4 mx-auto" style="max-width: 640px;">
+    <h3 class="text-center mb-1">Diagnóstico ATS</h3>
+    <p class="text-center text-muted mb-4">Acontecimientos traumáticos severos (NOM-035-STPS)</p>
+
+    <form asp-action="Index" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <label asp-for="Nomina" class="form-label"></label>
+                @if (Model.NominaDeSesion)
+                {
+                    <input asp-for="Nomina" class="form-control" readonly />
+                }
+                else
+                {
+                    <input asp-for="Nomina" class="form-control" />
+                }
+                <span asp-validation-for="Nomina" class="text-danger"></span>
+            </div>
+            <div class="col-sm-6">
+                <label asp-for="NombreCompleto" class="form-label"></label>
+                <input asp-for="NombreCompleto" class="form-control" />
+                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+            </div>
+            <div class="col-sm-6">
+                <label asp-for="Departamento" class="form-label"></label>
+                <input asp-for="Departamento" class="form-control" />
+                <span asp-validation-for="Departamento" class="text-danger"></span>
+            </div>
+            <div class="col-sm-6">
+                <label asp-for="Posicion" class="form-label"></label>
+                <input asp-for="Posicion" class="form-control" />
+                <span asp-validation-for="Posicion" class="text-danger"></span>
+            </div>
+            <div class="col-sm-4">
+                <label asp-for="Edad" class="form-label"></label>
+                <input asp-for="Edad" type="number" min="15" max="99" class="form-control" />
+                <span asp-validation-for="Edad" class="text-danger"></span>
+            </div>
+            <div class="col-sm-8">
+                <label asp-for="Antiguedad" class="form-label"></label>
+                <input asp-for="Antiguedad" class="form-control" placeholder="Ej. 3 años 4 meses" />
+                <span asp-validation-for="Antiguedad" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="alert alert-secondary small mt-4">
+            <strong>Aviso de privacidad.</strong>
+            La información de este cuestionario es confidencial y se considera un dato personal sensible.
+            Solo la consulta Servicio Médico de la empresa para identificar si requieres valoración y dar
+            seguimiento conforme a la NOM-035-STPS. No se comparte con tu jefe ni con otras áreas sin tu consentimiento.
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" asp-for="AceptaAviso" id="aceptaAviso" />
+            <label class="form-check-label" for="aceptaAviso">He leído y acepto el aviso de privacidad.</label>
+            <div><span asp-validation-for="AceptaAviso" class="text-danger"></span></div>
+        </div>
+
+        <button class="btn w-100">Comenzar</button>
+    </form>
+</div>

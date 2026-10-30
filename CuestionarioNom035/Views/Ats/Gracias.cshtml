@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Gracias";
+}
+
+<div class="card p-4 mx-auto text-center" style="max-width: 560px;">
+    <h3 class="mb-3">¡Gracias por tu participación!</h3>
+    <p class="mb-0">Tus respuestas fueron enviadas a Servicio Médico. Si es necesario, se pondrán en contacto contigo.</p>
+</div>
+
+@section Scripts {
+    <script>
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, document.title, location.href);
+        });
+    </script>
+}

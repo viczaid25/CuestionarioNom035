@@ -1,0 +1,61 @@
+@model NOM35.Web.ViewModels.AtsSeccionVM
+@{
+    ViewData["Title"] = $"Diagnóstico ATS - Sección {Model.Seccion.Clave}";
+}
+
+<div class="card p-4 mx-auto" style="max-width: 760px;">
+    <form asp-action="Seccion" method="post" id="formAts">
+        <input type="hidden" asp-for="EvaluacionId" />
+        <input type="hidden" asp-for="Paso" />
+
+        <h5 class="text-secondary mb-1">Sección @Model.Seccion.Clave</h5>
+        <h4 class="mb-3">@Model.Seccion.Titulo</h4>
+        @if (Model.Seccion.Introduccion is not null)
+        {
+            <p class="mb-3">@Model.Seccion.Introduccion</p>
+        }
+
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-center" style="width: 70px;">Sí</th>
+                    <th class="text-center" style="width: 70px;">No</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Seccion.Preguntas.Count; i++)
+                {
+                    var n = i + 1;
+                    Model.Respuestas.TryGetValue(n, out var r);
+                    <tr>
+                        <td>@n.- @Model.Seccion.Preguntas[i]</td>
+                        <td class="text-center">
+                            <input class="form-check-input" type="radio" name="Respuestas[@n]" value="true" required checked="@(r == true)" aria-label="Sí" />
+                        </td>
+                        <td class="text-center">
+                            <input class="form-check-input" type="radio" name="Respuestas[@n]" value="false" required checked="@(r == false)" aria-label="No" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button id="btnContinuar" type="submit" class="btn w-100">Continuar</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, document.title, location.href);
+        });
+        document.getElementById('formAts')?.addEventListener('submit', function () {
+            const btn = document.getElementById('btnContinuar');
+            if (btn) { btn.disabled = true; btn.innerText = 'Guardando...'; }
+        });
+    </script>
+}

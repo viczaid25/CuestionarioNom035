@@ -1,0 +1,86 @@
+﻿@using CuestionarioNom035.Helpers
+@using CuestionarioNom035.Data
+@using NOM35.Web.Models
+@model NOM35.Web.ViewModels.AtsCasoVM
+@{
+    Layout = null;
+    var e = Model.Evaluacion;
+    string Marca(bool? v, bool esperado) => v == esperado ? "X" : "";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Diagnóstico ATS - @e.NombreCompleto</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 11px; color: #000; margin: 24px; }
+        h1 { font-size: 15px; text-align: center; margin: 0 0 12px; }
+        h2 { font-size: 12px; background: #eee; padding: 4px; margin: 14px 0 6px; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { border: 1px solid #000; padding: 3px 5px; vertical-align: top; }
+        .c { text-align: center; width: 34px; }
+        .datos td { border: none; padding: 2px 4px; }
+        .firmas { margin-top: 48px; }
+        .firmas td { border: none; border-top: 1px solid #000; text-align: center; width: 45%; padding-top: 4px; }
+        .pie { margin-top: 12px; display: flex; justify-content: space-between; }
+        .no-print { margin-bottom: 12px; }
+        @@media print { .no-print { display: none; } body { margin: 0; } }
+    </style>
+</head>
+<body>
+    <div class="no-print"><button onclick="window.print()">Imprimir</button></div>
+
+    <h1>Diagnóstico ATS (NOM-035-STPS)</h1>
+
+    <table class="datos">
+        <tr><td><strong>Nombre completo:</strong> @e.NombreCompleto</td><td><strong>Fecha:</strong> @FechaHelper.AMexico(e.Inicio).ToString("dd/MM/yyyy")</td></tr>
+        <tr><td><strong>Nº nómina:</strong> @e.Nomina</td><td><strong>Edad:</strong> @e.Edad</td></tr>
+        <tr><td><strong>Departamento/Área:</strong> @e.Departamento</td><td><strong>Posición:</strong> @e.Posicion</td></tr>
+        <tr><td colspan="2"><strong>Antigüedad en la empresa:</strong> @e.Antiguedad</td></tr>
+    </table>
+
+    <h2>SECCIÓN I</h2>
+    <table>
+        <tr><th>Sección / Pregunta</th><th class="c">Sí</th><th class="c">No</th></tr>
+        @foreach (var s in AtsCatalogo.Secciones)
+        {
+            <tr><td colspan="3"><strong>@s.Clave.- @s.Titulo</strong>@(s.Introduccion is null ? "" : " " + s.Introduccion)</td></tr>
+            @for (var i = 0; i < s.Preguntas.Count; i++)
+            {
+                var r = Model.Respuesta(s.Seccion, i + 1);
+                <tr><td>@(i + 1).- @s.Preguntas[i]</td><td class="c">@Marca(r, true)</td><td class="c">@Marca(r, false)</td></tr>
+            }
+        }
+    </table>
+
+    <h2>SECCIÓN II</h2>
+    <table>
+        <tr><td>Estoy de acuerdo en proporcionar detalles del suceso: <strong>@(e.AceptaDarDetalles switch { true => "Sí", false => "No", _ => "" })</strong> @e.ComentarioDarDetalles</td></tr>
+        <tr><td style="height: 80px; white-space: pre-wrap;">Descripción: @e.DescripcionSuceso</td></tr>
+        <tr><td>Estoy de acuerdo en que la información que proporcione sea comunicada al área de Recursos Humanos para su seguimiento: <strong>@(e.AceptaComunicarRH switch { true => "Sí", false => "No", _ => "" })</strong> @e.ComentarioComunicarRH</td></tr>
+    </table>
+
+    <h2>RESULTADOS</h2>
+    <table>
+        <tr><td>Tipo de evaluación</td><td>Interna MEAX [@(e.TipoEvaluacion == AtsTipoEvaluacion.Interna ? "X" : " ")]</td><td>Externa MEAX [@(e.TipoEvaluacion == AtsTipoEvaluacion.Externa ? "X" : " ")]</td></tr>
+        <tr><td>Requiere seguimiento externo por norma</td><td>SÍ [@Marca(e.SeguimientoExterno, true)]</td><td>NO [@Marca(e.SeguimientoExterno, false)]</td></tr>
+        <tr><td>Requiere seguimiento interno (cada 6 meses)</td><td>SÍ [@Marca(e.SeguimientoInterno, true)]</td><td>NO [@Marca(e.SeguimientoInterno, false)]</td></tr>
+        <tr>
+            <td colspan="3">
+                Estoy consciente que tras la revisión realizada por parte del Servicio Médico de la empresa, esta me recomienda acudir a un
+                seguimiento externo (IMSS o particular) a partir de esta fecha para un mejor control, como empleado tengo la obligación de
+                cumplir este requerimiento y me obligo a entregar los comprobantes de mi asistencia a mis citas, así como de mantener
+                actualizado al servicio médico de la empresa mi status en cuanto a citas programadas y avance actual, por lo cual mi decisión es:
+                <br /><br />
+                [@Marca(e.DecisionAcudir, true)] Sí, acudir &nbsp;&nbsp; [@Marca(e.DecisionAcudir, false)] No acudir &nbsp;&nbsp; Por qué: @e.MotivoDecision
+            </td>
+        </tr>
+    </table>
+
+    <table class="firmas">
+        <tr><td>Nombre y firma empleado</td><td style="border-top: none; width: 10%;"></td><td>Nombre, firma y cédula doctor</td></tr>
+    </table>
+
+    <div class="pie"><span>Diagnóstico ATS (NOM-035-STPS)</span><span>MX-1401-F1</span></div>
+</body>
+</html>

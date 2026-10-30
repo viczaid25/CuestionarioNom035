@@ -1,0 +1,88 @@
+﻿@using CuestionarioNom035.Helpers
+@using NOM35.Web.Models
+@model NOM35.Web.ViewModels.AtsBandejaVM
+@{
+    ViewData["Title"] = "Servicio Médico - Diagnóstico ATS";
+    var pestañas = new (AtsEstado? Estado, string Texto)[]
+    {
+        (AtsEstado.PendienteRevision, "Pendientes"),
+        (AtsEstado.Revisado, "Revisados"),
+        (AtsEstado.SinAts, "Sin ATS"),
+        (AtsEstado.EnProceso, "En proceso"),
+        (null, "Todos")
+    };
+    string TextoEstado(AtsEstado e) => e switch
+    {
+        AtsEstado.PendienteRevision => "Pendiente",
+        AtsEstado.Revisado => "Revisado",
+        AtsEstado.SinAts => "Sin ATS",
+        _ => "En proceso"
+    };
+}
+
+<h3 class="mb-3">Diagnóstico ATS</h3>
+
+<ul class="nav nav-tabs mb-3">
+    @foreach (var p in pestañas)
+    {
+        var total = p.Estado is null ? Model.Conteos.Values.Sum() : Model.Conteos.GetValueOrDefault(p.Estado.Value);
+        <li class="nav-item">
+            <a class="nav-link @(Model.Estado == p.Estado ? "active" : "")"
+               asp-action="Index" asp-route-estado="@(p.Estado?.ToString() ?? "Todos")" asp-route-buscar="@Model.Buscar">
+                @p.Texto <span class="badge bg-secondary">@total</span>
+            </a>
+        </li>
+    }
+</ul>
+
+<form method="get" class="row g-2 mb-3">
+    <input type="hidden" name="estado" value="@(Model.Estado?.ToString() ?? "Todos")" />
+    <div class="col-sm-6">
+        <input name="buscar" value="@Model.Buscar" class="form-control" placeholder="Buscar por nómina, nombre o cuenta" />
+    </div>
+    <div class="col-sm-2">
+        <button class="btn w-100">Buscar</button>
+    </div>
+</form>
+
+@if (Model.Casos.Count == 0)
+{
+    <div class="alert alert-info">No hay casos.</div>
+}
+else
+{
+    <div class="card p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Nómina</th>
+                    <th>Nombre</th>
+                    <th>Departamento</th>
+                    <th>Estado</th>
+                    <th>Criterio de norma</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Casos)
+                {
+                    <tr>
+                        <td>@FechaHelper.AMexico(c.Fecha).ToString("yyyy-MM-dd")</td>
+                        <td>@c.Nomina</td>
+                        <td>@c.NombreCompleto</td>
+                        <td>@c.Departamento</td>
+                        <td>@TextoEstado(c.Estado)</td>
+                        <td>
+                            @if (c.RequiereValoracion)
+                            {
+                                <span class="badge bg-danger">Requiere valoración</span>
+                            }
+                        </td>
+                        <td><a class="btn btn-sm" asp-action="Caso" asp-route-id="@c.Id">Ver</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

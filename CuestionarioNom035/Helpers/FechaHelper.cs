@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace CuestionarioNom035.Helpers
 {
@@ -9,6 +9,10 @@ namespace CuestionarioNom035.Helpers
         // Fecha/hora local de México, sin depender de la zona horaria del servidor
         public static DateTime AhoraMexico() =>
             TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, ZonaMexico);
+
+        // Fecha guardada en UTC -> hora de México (para mostrar)
+        public static DateTime AMexico(DateTime utc) =>
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(utc, DateTimeKind.Utc), ZonaMexico);
 
         private static TimeZoneInfo ObtenerZonaMexico()
         {

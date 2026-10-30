@@ -1,5 +1,6 @@
 ﻿using CuestionarioNom035.Data;
 using CuestionarioNom035.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,8 @@ using NOM35.Web.ViewModels;
 using NOM35.Web.Models;
 namespace CuestionarioNom035.Controllers;
 
+// Guía III: anónima, nunca se liga a la sesión de MEAX One
+[AllowAnonymous]
 public class CuestionarioController : Controller
 {
     private const int UltimaPregunta = 72;

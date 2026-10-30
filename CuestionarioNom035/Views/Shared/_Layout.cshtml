@@ -1,5 +1,18 @@
-﻿@{
+﻿@using CuestionarioNom035.Auth
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService Autorizacion
+@inject IConfiguration Config
+@inject IWebHostEnvironment Env
+@{
     var title = ViewData["Title"] ?? "Cuestionario NOM-35";
+    var conSesion = User?.Identity?.IsAuthenticated == true;
+    var verReportes = conSesion && (await Autorizacion.AuthorizeAsync(User!, Permisos.Reportes)).Succeeded;
+    var verMedico = conSesion && (await Autorizacion.AuthorizeAsync(User!, Permisos.ServicioMedico)).Succeeded;
+    var modoDev = DevAuth.Habilitado(Env, Config);
+    // Latido solo con sesión del SSO; el login de desarrollo no tiene hub.
+    string? heartbeatUrl = conSesion && User!.Identity!.AuthenticationType != DevAuth.SchemeName
+        ? $"{HubSso.HubBaseUrl(Config)}/auth/heartbeat?system={Uri.EscapeDataString(HubSso.SystemCode(Config))}"
+        : null;
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -20,7 +33,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-semibold" href="/">NOM-35</a>
+            <a class="navbar-brand fw-semibold" href="~/">NOM-35</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
                     aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,8 +48,13 @@
                         <a class="nav-link" asp-controller="Cuestionario" asp-action="Inicio">Cuestionario</a>
                     </li>
 
+                    <!-- Diagnóstico ATS -->
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Ats" asp-action="Index">Diagnóstico ATS</a>
+                    </li>
+
                     <!-- Reportes -->
-                    @if (User?.Identity?.IsAuthenticated == true && User.HasClaim("CanViewReports", "true"))
+                    @if (verReportes)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="repDrop" role="button" data-bs-toggle="dropdown"
@@ -44,6 +62,9 @@
                             <ul class="dropdown-menu" aria-labelledby="repDrop">
                                 <li>
                                     <a class="dropdown-item" asp-controller="Reportes" asp-action="Validacion">Validación de carga</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Reportes" asp-action="SeguimientoAts">Seguimiento ATS</a>
                                 </li>
                             </ul>
                         </li>
@@ -53,28 +74,42 @@
                         </li>
                     }
 
+                    @if (verMedico)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="ServicioMedico" asp-action="Index">Servicio Médico</a>
+                        </li>
+                    }
+
 
                 </ul>
 
-                <!-- Ir a Evaluación por ID -->
-                @* <form class="d-flex" role="search" onsubmit="return goEvalById(event)">
-                    <input class="form-control me-2" type="number" min="1" id="evalId" placeholder="ID cuestionario"
-                           aria-label="ID cuestionario">
-                    <button class="btn btn-light" type="submit">Evaluación</button>
-                </form> *@
+                <!-- Usuario -->
+                @if (conSesion)
+                {
+                    var nombre = UsuarioActual.Nombre(User!);
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="badge rounded-circle bg-light text-primary me-1">@UsuarioActual.Iniciales(nombre)</span> @nombre
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><span class="dropdown-item-text small text-muted">Nómina @UsuarioActual.Nomina(User!) · @User!.FindFirst(MeaxClaims.Department)?.Value</span></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="@($"{HubSso.HubBaseUrl(Config)}/")">Volver a MEAX One</a></li>
+                            @if (!modoDev)
+                            {
+                                <li><a class="dropdown-item" href="~/salir">Cerrar sesión</a></li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="nav-link text-white" asp-controller="Home" asp-action="Entrar">Iniciar sesión</a>
+                }
             </div>
         </div>
     </nav>
-
-    <script>
-        function goEvalById(e){
-          e.preventDefault();
-          const id = document.getElementById('evalId').value?.trim();
-          if(!id) return false;
-          window.location.href = `/Reportes/Evaluacion/${id}`;
-          return false;
-        }
-    </script>
 
 
     <main class="container py-4">
@@ -86,6 +121,11 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @if (heartbeatUrl is not null)
+    {
+        <script>window.meaxHeartbeatUrl = '@heartbeatUrl';</script>
+    }
+    <script src="~/js/meax-heartbeat.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

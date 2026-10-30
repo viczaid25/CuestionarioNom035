@@ -1,0 +1,36 @@
+﻿@using CuestionarioNom035.Helpers
+@model List<NOM35.Web.ViewModels.AtsSeguimientoRhVM>
+@{
+    ViewData["Title"] = "Seguimiento ATS";
+}
+
+<h3 class="mb-1">Seguimiento ATS</h3>
+<p class="text-muted">Colaboradores en seguimiento por Servicio Médico que aceptaron que se comunicara a Recursos Humanos.
+    Las respuestas y los detalles son confidenciales y solo los consulta Servicio Médico.</p>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">No hay casos en seguimiento.</div>
+}
+else
+{
+    <div class="card p-0">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr><th>Nómina</th><th>Nombre</th><th>Departamento</th><th>Fecha de revisión</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@c.Nomina</td>
+                        <td>@c.NombreCompleto</td>
+                        <td>@c.Departamento</td>
+                        <td>@FechaHelper.AMexico(c.FechaRevision).ToString("yyyy-MM-dd")</td>
+                        <td><span class="badge bg-warning text-dark">En seguimiento</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

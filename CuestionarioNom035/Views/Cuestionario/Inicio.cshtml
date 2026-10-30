@@ -53,7 +53,7 @@
           const sel = document.getElementById('selSubarea');
           sel.innerHTML = '<option value="">-- Selecciona una subárea --</option>';
           if(!area) return;
-          const res = await fetch(`/api/areas/subareas?area=${encodeURIComponent(area)}`);
+          const res = await fetch(`@Url.Content("~/api/areas/subareas")?area=${encodeURIComponent(area)}`);
           const data = await res.json();
           data.forEach(x => {
             const opt = document.createElement('option');

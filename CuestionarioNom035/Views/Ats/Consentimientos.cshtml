@@ -1,0 +1,58 @@
+@model NOM35.Web.ViewModels.AtsConsentimientosVM
+@{
+    ViewData["Title"] = "Diagnóstico ATS - Consentimientos";
+}
+
+<div class="card p-4 mx-auto" style="max-width: 760px;">
+    <form asp-action="Consentimientos" method="post">
+        <input type="hidden" asp-for="EvaluacionId" />
+
+        <h4 class="mb-4">Consentimientos</h4>
+
+        <div class="mb-4">
+            <p class="fw-semibold mb-2">Estoy de acuerdo en proporcionar detalles del suceso:</p>
+            <div class="d-flex gap-4 mb-2">
+                <label class="form-check"><input class="form-check-input" type="radio" asp-for="AceptaDarDetalles" value="true" required /> Sí</label>
+                <label class="form-check"><input class="form-check-input" type="radio" asp-for="AceptaDarDetalles" value="false" required /> No</label>
+            </div>
+            <span asp-validation-for="AceptaDarDetalles" class="text-danger d-block"></span>
+            <input asp-for="ComentarioDarDetalles" class="form-control" placeholder="Detalle de tu respuesta (opcional)" />
+        </div>
+
+        <div class="mb-4" id="bloqueDescripcion">
+            <label asp-for="DescripcionSuceso" class="form-label fw-semibold">
+                Describe las situaciones de la sección I que contestaste con "Sí": ¿qué?, ¿quién?, ¿cuándo?, ¿cómo?, ¿dónde? y ¿por qué?
+            </label>
+            <textarea asp-for="DescripcionSuceso" class="form-control" rows="6" maxlength="4000"></textarea>
+            <span asp-validation-for="DescripcionSuceso" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <p class="fw-semibold mb-2">Estoy de acuerdo en que la información que proporcione sea comunicada al área de Recursos Humanos para su seguimiento:</p>
+            <div class="d-flex gap-4 mb-2">
+                <label class="form-check"><input class="form-check-input" type="radio" asp-for="AceptaComunicarRH" value="true" required /> Sí</label>
+                <label class="form-check"><input class="form-check-input" type="radio" asp-for="AceptaComunicarRH" value="false" required /> No</label>
+            </div>
+            <span asp-validation-for="AceptaComunicarRH" class="text-danger d-block"></span>
+            <input asp-for="ComentarioComunicarRH" class="form-control" placeholder="Detalle de tu respuesta (opcional)" />
+        </div>
+
+        <button type="submit" class="btn w-100">Enviar</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // La descripción solo aplica si acepta dar detalles
+        (function () {
+            const bloque = document.getElementById('bloqueDescripcion');
+            const radios = document.querySelectorAll('input[name="AceptaDarDetalles"]');
+            function actualizar() {
+                const si = document.querySelector('input[name="AceptaDarDetalles"]:checked')?.value === 'true';
+                bloque.style.display = si ? '' : 'none';
+            }
+            radios.forEach(r => r.addEventListener('change', actualizar));
+            actualizar();
+        })();
+    </script>
+}

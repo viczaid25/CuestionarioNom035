@@ -1,0 +1,131 @@
+﻿@using CuestionarioNom035.Helpers
+@using CuestionarioNom035.Data
+@using NOM35.Web.Models
+@model NOM35.Web.ViewModels.AtsCasoVM
+@{
+    var e = Model.Evaluacion;
+    ViewData["Title"] = $"Caso ATS - {e.NombreCompleto}";
+    var conResultados = e.Estado is AtsEstado.PendienteRevision or AtsEstado.Revisado;
+    string SiNo(bool? v) => v switch { true => "Sí", false => "No", _ => "—" };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Index">&larr; Bandeja</a>
+    <a class="btn btn-sm" asp-action="Imprimir" asp-route-id="@e.Id" target="_blank">Imprimir formato</a>
+</div>
+
+@if (TempData["Ok"] is string ok)
+{
+    <div class="alert alert-success py-2">@ok</div>
+}
+
+<div class="card p-4 mb-3">
+    <h4 class="mb-3">@e.NombreCompleto</h4>
+    <div class="row small">
+        <div class="col-sm-4"><strong>Nómina:</strong> @e.Nomina</div>
+        <div class="col-sm-4"><strong>Departamento:</strong> @e.Departamento</div>
+        <div class="col-sm-4"><strong>Posición:</strong> @e.Posicion</div>
+        <div class="col-sm-4"><strong>Edad:</strong> @e.Edad</div>
+        <div class="col-sm-4"><strong>Antigüedad:</strong> @e.Antiguedad</div>
+        <div class="col-sm-4"><strong>Fecha:</strong> @FechaHelper.AMexico(e.Inicio).ToString("yyyy-MM-dd HH:mm")</div>
+    </div>
+    @if (e.Estado == AtsEstado.SinAts)
+    {
+        <div class="alert alert-secondary mt-3 mb-0">Contestó "No" en toda la sección I: no presenta acontecimiento traumático severo.</div>
+    }
+    else if (e.Estado == AtsEstado.EnProceso)
+    {
+        <div class="alert alert-warning mt-3 mb-0">El colaborador aún no termina el cuestionario.</div>
+    }
+    else
+    {
+        <div class="alert @(Model.RequiereValoracion ? "alert-danger" : "alert-success") mt-3 mb-0">
+            Criterio de la norma (Guía I):
+            <strong>@(Model.RequiereValoracion ? "requiere valoración clínica" : "no requiere valoración clínica")</strong>.
+            <span class="d-block small">Se requiere con al menos 1 "Sí" en la sección II, 3 o más en la III, o 2 o más en la IV.</span>
+        </div>
+    }
+</div>
+
+<div class="card p-4 mb-3">
+    <h5 class="mb-3">Respuestas</h5>
+    @foreach (var s in AtsCatalogo.Secciones)
+    {
+        var contestada = e.Respuestas.Any(r => r.Seccion == s.Seccion);
+        if (!contestada) { continue; }
+        <h6 class="mt-2">Sección @s.Clave. @s.Titulo
+            <span class="badge bg-secondary">@e.Respuestas.Count(r => r.Seccion == s.Seccion && r.Si) Sí</span>
+        </h6>
+        <table class="table table-sm mb-3">
+            @for (var i = 0; i < s.Preguntas.Count; i++)
+            {
+                var r = Model.Respuesta(s.Seccion, i + 1);
+                <tr class="@(r == true ? "table-warning" : "")">
+                    <td>@(i + 1).- @s.Preguntas[i]</td>
+                    <td class="text-end fw-semibold" style="width: 60px;">@SiNo(r)</td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+
+@if (conResultados)
+{
+    <div class="card p-4 mb-3">
+        <h5 class="mb-3">Consentimientos</h5>
+        <p class="mb-1"><strong>Acepta proporcionar detalles del suceso:</strong> @SiNo(e.AceptaDarDetalles)
+            @if (e.ComentarioDarDetalles is not null) { <span class="text-muted">— @e.ComentarioDarDetalles</span> }</p>
+        @if (e.DescripcionSuceso is not null)
+        {
+            <div class="border rounded p-2 mb-2" style="white-space: pre-wrap;">@e.DescripcionSuceso</div>
+        }
+        <p class="mb-0"><strong>Acepta que se comunique a Recursos Humanos:</strong> @SiNo(e.AceptaComunicarRH)
+            @if (e.ComentarioComunicarRH is not null) { <span class="text-muted">— @e.ComentarioComunicarRH</span> }</p>
+    </div>
+
+    <div class="card p-4">
+        <h5 class="mb-3">Resultados</h5>
+        @if (e.FechaRevision is not null)
+        {
+            <p class="small text-muted">Última revisión: @e.RevisadoPor, @FechaHelper.AMexico(e.FechaRevision.Value).ToString("yyyy-MM-dd HH:mm")</p>
+        }
+        <form asp-action="Caso" method="post">
+            <input type="hidden" asp-for="Resultados.EvaluacionId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <p class="fw-semibold mb-1">Tipo de evaluación</p>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.TipoEvaluacion" value="@AtsTipoEvaluacion.Interna" /> Interna MEAX</label>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.TipoEvaluacion" value="@AtsTipoEvaluacion.Externa" /> Externa MEAX</label>
+                <span asp-validation-for="Resultados.TipoEvaluacion" class="text-danger d-block"></span>
+            </div>
+
+            <div class="mb-3">
+                <p class="fw-semibold mb-1">Requiere seguimiento externo por norma</p>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.SeguimientoExterno" value="true" /> Sí</label>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.SeguimientoExterno" value="false" /> No</label>
+                @if (e.Estado == AtsEstado.PendienteRevision)
+                {
+                    <span class="small text-muted">(sugerido por el criterio de la norma)</span>
+                }
+                <span asp-validation-for="Resultados.SeguimientoExterno" class="text-danger d-block"></span>
+            </div>
+
+            <div class="mb-3">
+                <p class="fw-semibold mb-1">Requiere seguimiento interno (cada 6 meses)</p>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.SeguimientoInterno" value="true" /> Sí</label>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.SeguimientoInterno" value="false" /> No</label>
+                <span asp-validation-for="Resultados.SeguimientoInterno" class="text-danger d-block"></span>
+            </div>
+
+            <div class="mb-3">
+                <p class="fw-semibold mb-1">Decisión del colaborador sobre acudir al seguimiento externo (IMSS o particular)</p>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.DecisionAcudir" value="true" /> Sí, acudir</label>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio" asp-for="Resultados.DecisionAcudir" value="false" /> No acudir</label>
+                <input asp-for="Resultados.MotivoDecision" class="form-control mt-2" placeholder="¿Por qué?" />
+            </div>
+
+            <button class="btn">Guardar resultados</button>
+        </form>
+    </div>
+}
