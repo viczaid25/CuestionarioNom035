@@ -1,9 +1,8 @@
 ﻿using CuestionarioNom035.Data;
+using CuestionarioNom035.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CuestionarioNom035.Models;
-using CuestionarioNom035.ViewModels;
 using NOM35.Web.Services;
 using NOM35.Web.ViewModels;
 using NOM35.Web.Models;
@@ -11,24 +10,18 @@ namespace CuestionarioNom035.Controllers;
 
 public class CuestionarioController : Controller
 {
+    private const int UltimaPregunta = 72;
+
     private readonly Nom35DbContext _db;
     private readonly IFlujoService _flujo;
-    private readonly IScoringService _score;
 
-    public CuestionarioController(Nom35DbContext db, IFlujoService flujo, IScoringService score)
-    { _db = db; _flujo = flujo; _score = score; }
+    public CuestionarioController(Nom35DbContext db, IFlujoService flujo)
+    { _db = db; _flujo = flujo; }
 
     [HttpGet]
     public IActionResult Inicio()
     {
-        var vm = new InicioVM
-        {
-            AreasDisponibles = CatalogoAreas.Areas()
-                .Select(a => new SelectListItem { Text = a, Value = a })
-                .ToList()
-        };
-
-        return View(vm);
+        return View(new InicioVM { AreasDisponibles = AreasSelect() });
     }
 
 
@@ -36,11 +29,7 @@ public class CuestionarioController : Controller
     public async Task<IActionResult> Inicio(InicioVM vm)
     {
         // repoblar áreas por si hay error
-        if (vm.AreasDisponibles == null || vm.AreasDisponibles.Count == 0)
-        {
-            vm.AreasDisponibles = CatalogoAreas.Areas()
-                .Select(a => new SelectListItem { Text = a, Value = a }).ToList();
-        }
+        vm.AreasDisponibles = AreasSelect();
 
         if (!ModelState.IsValid) return View(vm);
 
@@ -67,125 +56,100 @@ public class CuestionarioController : Controller
             return View(vm);
         }
 
+        var numeroEmpleado = vm.NumeroEmpleado.Trim();
+        var anio = FechaHelper.AhoraMexico().Year;
+
         // Crear/obtener participante
         var part = await _db.Participantes
-            .FirstOrDefaultAsync(p => p.NumeroEmpleado == vm.NumeroEmpleado);
+            .FirstOrDefaultAsync(p => p.NumeroEmpleado == numeroEmpleado);
 
-        if (part is null)
+        if (part is not null)
+        {
+            // Un solo cuestionario por empleado por año
+            var yaTermino = await _db.Cuestionarios
+                .AnyAsync(c => c.ParticipanteId == part.Id && c.Anio == anio && c.Fin != null);
+            if (yaTermino)
+            {
+                ModelState.AddModelError(nameof(vm.NumeroEmpleado),
+                    $"Este número de empleado ya contestó el cuestionario {anio}.");
+                return View(vm);
+            }
+
+            // Si dejó uno a medias, continúa donde se quedó
+            var enProceso = await _db.CuestionarioSesiones
+                .Where(s => s.Cuestionario.ParticipanteId == part.Id && s.Cuestionario.Anio == anio)
+                .OrderByDescending(s => s.Cuestionario.Inicio)
+                .FirstOrDefaultAsync();
+            if (enProceso is not null)
+                return RedirectToAction(nameof(Pregunta), new { id = enProceso.Token });
+
+            part.AreaNombre = vm.Area;
+            part.SubareaNombre = vm.Subarea;
+            part.TipoEmpleado = vm.TipoEmpleado.Value;
+        }
+        else
         {
             part = new Participante
             {
-                NumeroEmpleado = vm.NumeroEmpleado,
+                NumeroEmpleado = numeroEmpleado,
                 AreaNombre = vm.Area,
                 SubareaNombre = vm.Subarea,
                 TipoEmpleado = vm.TipoEmpleado.Value
             };
             _db.Participantes.Add(part);
-            await _db.SaveChangesAsync();
-        }
-        else
-        {
-            // si quieres actualizar datos al reingresar
-            part.AreaNombre = vm.Area;
-            part.SubareaNombre = vm.Subarea;
-            part.TipoEmpleado = vm.TipoEmpleado.Value;
-            await _db.SaveChangesAsync();
         }
 
-        var c = new Cuestionario
+        var ses = new CuestionarioSesion
         {
-            ParticipanteId = part.Id,
-            Anio = DateTime.Now.Year
+            IndiceActual = 1,
+            Cuestionario = new Cuestionario
+            {
+                Participante = part,
+                Anio = anio,
+                AreaNombre = vm.Area,
+                SubareaNombre = vm.Subarea,
+                TipoEmpleado = vm.TipoEmpleado.Value
+            }
         };
-        _db.Cuestionarios.Add(c);
-        await _db.SaveChangesAsync();
-
-        var ses = new CuestionarioSesion { CuestionarioId = c.Id, IndiceActual = 1 };
         _db.CuestionarioSesiones.Add(ses);
         await _db.SaveChangesAsync();
 
-        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        return RedirectToAction(nameof(Pregunta), new { id = ses.Token });
     }
 
-
-    // Helper para rellenar el Select si regresas la vista con errores
-    private static List<SelectListItem> ObtenerAreasFijas() => new()
-{
-    new SelectListItem { Text = "MELX", Value = "MELX" },
-    new SelectListItem { Text = "SAL",  Value = "SAL" },
-    new SelectListItem { Text = "IT",   Value = "IT"  },
-    new SelectListItem { Text = "PD",   Value = "PD"  },
-    new SelectListItem { Text = "LGL",  Value = "LGL" },
-    new SelectListItem { Text = "PRC",  Value = "PRC" },
-    new SelectListItem { Text = "TOP",  Value = "TOP" },
-    new SelectListItem { Text = "HR",   Value = "HR"  },
-    new SelectListItem { Text = "FIN",  Value = "FIN" },
-    new SelectListItem { Text = "QC",   Value = "QC"  },
-    new SelectListItem { Text = "PC",   Value = "PC"  },
-    new SelectListItem { Text = "FC",   Value = "FC"  }
-};
-
-    // GET: /Cuestionario/Pregunta/{id}
+    // GET: /Cuestionario/Pregunta/{token}
     [HttpGet]
-    public async Task<IActionResult> Pregunta(int id)
+    public async Task<IActionResult> Pregunta(Guid id)
     {
-        var ses = await _db.CuestionarioSesiones
-            .Include(s => s.Cuestionario)
-            .FirstOrDefaultAsync(s => s.Id == id);
-
+        var ses = await CargarSesionAsync(id);
         if (ses is null) return NotFound();
 
-        // Si ya terminó, ir a resumen
-        if (ses.IndiceActual > 72)
-            return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
+        // Si ya terminó, ir al agradecimiento
+        if (ses.Cuestionario.Fin is not null || ses.IndiceActual > UltimaPregunta)
+            return await AvanzarAsync(ses, UltimaPregunta + 1);
 
         // Mostrar filtros cuando toca y el flag está sin responder
         if (ses.IndiceActual == 65 && ses.Cuestionario.AtiendeClientes is null)
-            return View("FiltroClientes", new FiltroClientesVM { SesionId = id });
+            return View("FiltroClientes", new FiltroClientesVM { SesionId = ses.Token });
 
         if (ses.IndiceActual == 69 && ses.Cuestionario.EsJefe is null)
-            return View("FiltroJefe", new FiltroJefeVM { SesionId = id });
+            return View("FiltroJefe", new FiltroJefeVM { SesionId = ses.Token });
 
         // Si el índice actual NO debe mostrarse (por los filtros), saltar al siguiente visible
         if (!_flujo.DebeMostrar(ses.IndiceActual, ses.Cuestionario))
-        {
-            var next = _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual - 1);
-            if (next > 72)
-            {
-                ses.IndiceActual = 73;
-                await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
-            }
-            ses.IndiceActual = next;
-            ses.AntiBackToken = Guid.NewGuid().ToString();
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
-        }
+            return await AvanzarAsync(ses, _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual - 1));
 
-        // Cargar la pregunta del índice actual (usa FirstOrDefault y avanza si no existe)
+        // Cargar la pregunta del índice actual (avanza si no existe)
         var pregunta = await _db.Preguntas
             .Include(p => p.Dimension).ThenInclude(d => d.Dominio).ThenInclude(o => o.Categoria)
             .FirstOrDefaultAsync(p => p.Numero == ses.IndiceActual);
 
         if (pregunta == null)
-        {
-            // Si no hay pregunta con ese número, avanza al siguiente visible
-            var next = _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual);
-            if (next > 72)
-            {
-                ses.IndiceActual = 73;
-                await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
-            }
-            ses.IndiceActual = next;
-            ses.AntiBackToken = Guid.NewGuid().ToString();
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
-        }
+            return await AvanzarAsync(ses, _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual));
 
         var vm = new PreguntaVM
         {
-            SesionId = ses.Id,
+            SesionId = ses.Token,
             AntiBackToken = ses.AntiBackToken ?? "",
             Numero = pregunta.Numero,
             Texto = pregunta.Texto,
@@ -201,12 +165,20 @@ public class CuestionarioController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Responder(PreguntaVM vm)
     {
-        var ses = await _db.CuestionarioSesiones
-            .Include(s => s.Cuestionario)
-            .FirstAsync(s => s.Id == vm.SesionId);
+        var ses = await CargarSesionAsync(vm.SesionId);
+        if (ses is null) return NotFound();
+
+        if (ses.Cuestionario.Fin is not null)
+            return RedirectToAction(nameof(Gracias));
 
         if (vm.AntiBackToken != ses.AntiBackToken || vm.Numero != ses.IndiceActual)
             return BadRequest("Secuencia inválida. No se permite regresar.");
+
+        if (vm.Seleccion is null || !Enum.IsDefined(vm.Seleccion.Value))
+        {
+            TempData["Error"] = "Selecciona una opción.";
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Token });
+        }
 
         var pregunta = await _db.Preguntas.FirstAsync(p => p.Numero == vm.Numero);
 
@@ -215,191 +187,87 @@ public class CuestionarioController : Controller
             CuestionarioId = ses.CuestionarioId,
             NumeroPregunta = vm.Numero,
             PreguntaId = pregunta.Id,
-            Opcion = vm.Seleccion
+            Opcion = vm.Seleccion.Value
         });
-        await _db.SaveChangesAsync();
 
-        // Chequeos de decisión inmediatos:
-        if (ses.IndiceActual == 64 && ses.Cuestionario.AtiendeClientes is null)
-        {
-            ses.IndiceActual = 65;                 // para que GET muestre FiltroClientes
-            ses.AntiBackToken = Guid.NewGuid().ToString();
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
-        }
-
-        if (ses.IndiceActual == 68 && ses.Cuestionario.EsJefe is null)
-        {
-            ses.IndiceActual = 69;                 // para que GET muestre FiltroJefe
-            ses.AntiBackToken = Guid.NewGuid().ToString();
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
-        }
-
-        int next = _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual);
-        if (next > 72)
-        {
-            ses.Cuestionario.Fin = DateTime.UtcNow;
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
-        }
-
-        ses.IndiceActual = next;
-        ses.AntiBackToken = Guid.NewGuid().ToString();
-        await _db.SaveChangesAsync();
-
-        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        // SiguienteNumero se detiene en 65/69 si los filtros siguen sin responder
+        return await AvanzarAsync(ses, _flujo.SiguienteNumero(ses.Cuestionario, ses.IndiceActual));
     }
 
     // POST: /Cuestionario/SetFiltroClientes
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> SetFiltroClientes(FiltroClientesVM vm)
     {
-        var ses = await _db.CuestionarioSesiones
-            .Include(s => s.Cuestionario)
-            .FirstAsync(s => s.Id == vm.SesionId);
+        var ses = await CargarSesionAsync(vm.SesionId);
+        if (ses is null) return NotFound();
+
+        // Solo se acepta cuando el flujo está detenido en este filtro
+        if (vm.AtiendeClientes is null || ses.Cuestionario.Fin is not null ||
+            ses.IndiceActual != 65 || ses.Cuestionario.AtiendeClientes is not null)
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Token });
 
         ses.Cuestionario.AtiendeClientes = vm.AtiendeClientes;
         // si dijo "No", saltamos 65-68 automáticamente
-        int next = _flujo.SiguienteNumero(ses.Cuestionario, 64);
-        ses.IndiceActual = next;
-        ses.AntiBackToken = Guid.NewGuid().ToString();
-
-        await _db.SaveChangesAsync();
-        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        return await AvanzarAsync(ses, _flujo.SiguienteNumero(ses.Cuestionario, 64));
     }
 
     // POST: /Cuestionario/SetFiltroJefe
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> SetFiltroJefe(FiltroJefeVM vm)
     {
-        var ses = await _db.CuestionarioSesiones
-            .Include(s => s.Cuestionario)
-            .FirstAsync(s => s.Id == vm.SesionId);
+        var ses = await CargarSesionAsync(vm.SesionId);
+        if (ses is null) return NotFound();
+
+        // Solo se acepta cuando el flujo está detenido en este filtro
+        if (vm.EsJefe is null || ses.Cuestionario.Fin is not null ||
+            ses.IndiceActual != 69 || ses.Cuestionario.EsJefe is not null)
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Token });
 
         ses.Cuestionario.EsJefe = vm.EsJefe;
         // si dijo "No", saltamos 69-72 automáticamente
-        int next = _flujo.SiguienteNumero(ses.Cuestionario, 68);
-        ses.IndiceActual = next;
-        ses.AntiBackToken = Guid.NewGuid().ToString();
-
-        await _db.SaveChangesAsync();
-        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        return await AvanzarAsync(ses, _flujo.SiguienteNumero(ses.Cuestionario, 68));
     }
 
-    public async Task<IActionResult> Resumen(int id)
-    {
-        var c = await _db.Cuestionarios
-            .Include(x => x.Respuestas)
-                .ThenInclude(r => r.Pregunta)
-                    .ThenInclude(p => p.Dimension)
-                        .ThenInclude(d => d.Dominio)
-                            .ThenInclude(o => o.Categoria)
-            .FirstAsync(x => x.Id == id);
-
-        var (total, porCat, porDom, porDim) = _score.CalcularTotales(c);
-        return View(new ResumenVM
-        {
-            CuestionarioId = id,
-            Total = total,
-            PorCategoria = porCat,
-            PorDominio = porDom,
-            PorDimension = porDim
-        });
-    }
-
-    // GET: /Reportes/Validacion
+    // GET: /Cuestionario/Gracias
     [HttpGet]
-    public async Task<IActionResult> Validacion()
-    {
-        var preguntas = await _db.Preguntas
-            .Include(p => p.Dimension)
-                .ThenInclude(d => d.Dominio)
-                    .ThenInclude(o => o.Categoria)
-            .OrderBy(p => p.Numero)
-            .ToListAsync();
+    public IActionResult Gracias() => View();
 
-        var vm = new ValidacionCargaVM
-        {
-            TotalPreguntas = preguntas.Count,
-            PorCategoria = preguntas
-                .GroupBy(p => p.Dimension.Dominio.Categoria.Nombre)
-                .OrderBy(g => g.Key)
-                .ToDictionary(g => g.Key, g => g.Count()),
-            PorDominio = preguntas
-                .GroupBy(p => $"{p.Dimension.Dominio.Categoria.Nombre} > {p.Dimension.Dominio.Nombre}")
-                .OrderBy(g => g.Key)
-                .ToDictionary(g => g.Key, g => g.Count()),
-            PorDimension = preguntas
-                .GroupBy(p => $"{p.Dimension.Dominio.Categoria.Nombre} > {p.Dimension.Dominio.Nombre} > {p.Dimension.Nombre}")
-                .OrderBy(g => g.Key)
-                .ToDictionary(g => g.Key, g => g.Count()),
-            Muestra = preguntas
-                .Take(10)
-                .Select(p => (p.Numero,
-                              p.Texto,
-                              p.Dimension.Dominio.Categoria.Nombre,
-                              p.Dimension.Dominio.Nombre,
-                              p.Dimension.Nombre))
-                .ToList()
-        };
-
-        return View(vm);
-    }
-
-    // POST: /Cuestionario/FiltroClientes
-    [HttpPost]
-    public async Task<IActionResult> FiltroClientes(FiltroClientesVM vm)
-    {
-        var ses = await _db.CuestionarioSesiones
+    private Task<CuestionarioSesion?> CargarSesionAsync(Guid token) =>
+        _db.CuestionarioSesiones
             .Include(s => s.Cuestionario)
-            .FirstOrDefaultAsync(s => s.Id == vm.SesionId);
-        if (ses is null) return NotFound();
+            .FirstOrDefaultAsync(s => s.Token == token);
 
-        ses.Cuestionario.AtiendeClientes = vm.AtiendeClientes;
-        await _db.SaveChangesAsync();
-
-        // Partimos desde 65 para calcular el próximo visible
-        var next = _flujo.SiguienteNumero(ses.Cuestionario, 65);
-        if (next > 72)
+    // Mueve la sesión a la pregunta indicada (o la cierra si ya no hay más) y guarda los cambios pendientes
+    private async Task<IActionResult> AvanzarAsync(CuestionarioSesion ses, int siguiente)
+    {
+        if (siguiente > UltimaPregunta)
         {
-            ses.IndiceActual = 73;
+            ses.IndiceActual = UltimaPregunta + 1;
+            ses.Cuestionario.Fin ??= DateTime.UtcNow;
+        }
+        else
+        {
+            ses.IndiceActual = siguiente;
+        }
+        ses.AntiBackToken = Guid.NewGuid().ToString();
+
+        try
+        {
             await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException { Number: 2601 or 2627 })
+        {
+            // Doble envío de la misma respuesta (índice único): se ignora y se retoma el flujo
+            return RedirectToAction(nameof(Pregunta), new { id = ses.Token });
         }
 
-        ses.IndiceActual = next;
-        ses.AntiBackToken = Guid.NewGuid().ToString();
-        await _db.SaveChangesAsync();
-        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
+        return ses.IndiceActual > UltimaPregunta
+            ? RedirectToAction(nameof(Gracias))
+            : RedirectToAction(nameof(Pregunta), new { id = ses.Token });
     }
 
-    // POST: /Cuestionario/FiltroJefe
-    [HttpPost]
-    public async Task<IActionResult> FiltroJefe(FiltroJefeVM vm)
-    {
-        var ses = await _db.CuestionarioSesiones
-            .Include(s => s.Cuestionario)
-            .FirstOrDefaultAsync(s => s.Id == vm.SesionId);
-        if (ses is null) return NotFound();
-
-        ses.Cuestionario.EsJefe = vm.EsJefe;
-        await _db.SaveChangesAsync();
-
-        // Partimos desde 69 para calcular el próximo visible
-        var next = _flujo.SiguienteNumero(ses.Cuestionario, 69);
-        if (next > 72)
-        {
-            ses.IndiceActual = 73;
-            ses.Cuestionario.Fin = DateTime.UtcNow;
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Resumen), new { id = ses.CuestionarioId });
-        }
-
-        ses.IndiceActual = next;
-        ses.AntiBackToken = Guid.NewGuid().ToString();
-        await _db.SaveChangesAsync();
-        return RedirectToAction(nameof(Pregunta), new { id = ses.Id });
-    }
-
+    private static List<SelectListItem> AreasSelect() =>
+        CatalogoAreas.Areas()
+            .Select(a => new SelectListItem { Text = a, Value = a })
+            .ToList();
 }

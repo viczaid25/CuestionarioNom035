@@ -4,6 +4,7 @@
     {
         public int CuestionarioId { get; set; }
         public Cuestionario Cuestionario { get; set; } = null!;
+        public Guid Token { get; set; } = Guid.NewGuid(); // identificador público usado en la URL
         public int IndiceActual { get; set; } = 1; // número de pregunta a mostrar
         public string AntiBackToken { get; set; } = Guid.NewGuid().ToString();
     }

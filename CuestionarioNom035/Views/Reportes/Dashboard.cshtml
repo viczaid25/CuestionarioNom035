@@ -25,6 +25,13 @@
   </form>
 </div>
 
+@if (Model.TotalEnProceso > 0)
+{
+  <div class="alert alert-info">
+    @Model.TotalEnProceso cuestionario(s) iniciado(s) sin terminar. No se incluyen en los resultados.
+  </div>
+}
+
 @if (Model.TotalCuestionarios == 0)
 {
   <div class="alert alert-warning">No hay evaluaciones para los filtros seleccionados.</div>

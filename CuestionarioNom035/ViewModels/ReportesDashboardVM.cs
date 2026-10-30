@@ -19,6 +19,7 @@ namespace CuestionarioNom035.ViewModels
 
         public double CfinalPromedio { get; set; }
         public int TotalCuestionarios { get; set; }
+        public int TotalEnProceso { get; set; }   // iniciados sin terminar (no cuentan en promedios)
 
         public List<string> CatLabels { get; set; } = new();
         public List<double> CatValues { get; set; } = new();

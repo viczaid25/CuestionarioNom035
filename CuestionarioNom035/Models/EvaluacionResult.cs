@@ -1,4 +1,6 @@
-﻿namespace NOM35.Web.Models
+﻿using CuestionarioNom035.Helpers;
+
+namespace NOM35.Web.Models
 {
     public class EvaluacionResult
     {
@@ -10,11 +12,11 @@
     {
         public static EvaluacionResult CalificarCuestionario(double cfinal)
         {
-            if (cfinal < 50) return Nuevo("Nulo o despreciable", "#4caf50");
-            if (cfinal < 75) return Nuevo("Bajo", "#8bc34a");
-            if (cfinal < 99) return Nuevo("Medio", "#ffc107");
-            if (cfinal < 140) return Nuevo("Alto", "#ff9800");
-            return Nuevo("Muy alto", "#f44336");
+            if (cfinal < 50) return Nuevo("Nulo o despreciable", Nom035ColorHelper.Azul);
+            if (cfinal < 75) return Nuevo("Bajo", Nom035ColorHelper.Verde);
+            if (cfinal < 99) return Nuevo("Medio", Nom035ColorHelper.Amar);
+            if (cfinal < 140) return Nuevo("Alto", Nom035ColorHelper.Naranja);
+            return Nuevo("Muy alto", Nom035ColorHelper.Rojo);
         }
 
         public static EvaluacionResult CalificarCategoria(string categoria, double ccat)
@@ -50,11 +52,11 @@
 
         private static EvaluacionResult Eval(double val, double b1, double b2, double b3, double b4)
         {
-            if (val < b1) return Nuevo("Nulo o despreciable", "#4caf50");
-            if (val < b2) return Nuevo("Bajo", "#8bc34a");
-            if (val < b3) return Nuevo("Medio", "#ffc107");
-            if (val < b4) return Nuevo("Alto", "#ff9800");
-            return Nuevo("Muy alto", "#f44336");
+            if (val < b1) return Nuevo("Nulo o despreciable", Nom035ColorHelper.Azul);
+            if (val < b2) return Nuevo("Bajo", Nom035ColorHelper.Verde);
+            if (val < b3) return Nuevo("Medio", Nom035ColorHelper.Amar);
+            if (val < b4) return Nuevo("Alto", Nom035ColorHelper.Naranja);
+            return Nuevo("Muy alto", Nom035ColorHelper.Rojo);
         }
 
         private static EvaluacionResult Nuevo(string n, string c) => new() { Nivel = n, Color = c };

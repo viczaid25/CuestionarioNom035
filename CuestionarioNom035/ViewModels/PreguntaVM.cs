@@ -5,7 +5,7 @@ namespace NOM35.Web.ViewModels
 {
     public class PreguntaVM
     {
-        public int SesionId { get; set; }
+        public Guid SesionId { get; set; }
         public string AntiBackToken { get; set; } = "";
 
         public int Numero { get; set; }
@@ -16,6 +16,6 @@ namespace NOM35.Web.ViewModels
         public string Dimension { get; set; } = "";
 
         [Required(ErrorMessage = "Selecciona una opción.")]
-        public OpcionLikert Seleccion { get; set; }
+        public OpcionLikert? Seleccion { get; set; }
     }
 }

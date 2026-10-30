@@ -22,23 +22,6 @@ namespace CuestionarioNom035.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("NOM35.Web.Models.Area", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Areas");
-                });
-
             modelBuilder.Entity("NOM35.Web.Models.Categoria", b =>
                 {
                     b.Property<int>("Id")
@@ -67,6 +50,10 @@ namespace CuestionarioNom035.Migrations
                     b.Property<int>("Anio")
                         .HasColumnType("int");
 
+                    b.Property<string>("AreaNombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool?>("AtiendeClientes")
                         .HasColumnType("bit");
 
@@ -80,6 +67,13 @@ namespace CuestionarioNom035.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("ParticipanteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubareaNombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoEmpleado")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -107,9 +101,17 @@ namespace CuestionarioNom035.Migrations
                     b.Property<int>("IndiceActual")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("Token")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CuestionarioId");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
 
                     b.ToTable("CuestionarioSesiones");
                 });
@@ -236,9 +238,10 @@ namespace CuestionarioNom035.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CuestionarioId");
-
                     b.HasIndex("PreguntaId");
+
+                    b.HasIndex("CuestionarioId", "NumeroPregunta")
+                        .IsUnique();
 
                     b.ToTable("Respuestas");
                 });

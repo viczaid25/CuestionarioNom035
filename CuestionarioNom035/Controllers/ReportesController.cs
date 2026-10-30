@@ -9,6 +9,7 @@ using System.Linq;
 using CuestionarioNom035.ViewModels;
 using CuestionarioNom035.Data;
 using Microsoft.AspNetCore.Authorization;
+using CuestionarioNom035.Helpers;
 
 
 namespace CuestionarioNom035.Controllers
@@ -103,24 +104,30 @@ namespace CuestionarioNom035.Controllers
         public async Task<IActionResult> Dashboard(int? anio, string? area, string? subarea)
         {
             var areasFijas = CatalogoAreas.Areas();
-            int anioActual = DateTime.Now.Year;
+            int anioActual = FechaHelper.AhoraMexico().Year;
             int anioFiltro = anio ?? anioActual;
             var anios = Enumerable.Range(anioActual - 4, 5).Reverse().ToList();
 
-            var query = _db.Cuestionarios
+            // Filtro base (año/área/subárea) sobre los datos guardados en el cuestionario
+            var baseQuery = _db.Cuestionarios.Where(c => c.Anio == anioFiltro);
+
+            if (!string.IsNullOrWhiteSpace(area))
+                baseQuery = baseQuery.Where(c => c.AreaNombre == area);
+
+            if (!string.IsNullOrWhiteSpace(subarea))
+                baseQuery = baseQuery.Where(c => c.SubareaNombre == subarea);
+
+            // Los cuestionarios sin terminar no cuentan en los promedios
+            var enProceso = await baseQuery.CountAsync(c => c.Fin == null);
+
+            var query = baseQuery
+                .Where(c => c.Fin != null)
                 .Include(c => c.Participante)
                 .Include(c => c.Respuestas)
                     .ThenInclude(r => r.Pregunta)
                         .ThenInclude(p => p.Dimension)
                             .ThenInclude(d => d.Dominio)
-                                .ThenInclude(o => o.Categoria)
-                .Where(c => c.Anio == anioFiltro);
-
-            if (!string.IsNullOrWhiteSpace(area))
-                query = query.Where(c => c.Participante.AreaNombre == area);
-
-            if (!string.IsNullOrWhiteSpace(subarea))
-                query = query.Where(c => c.Participante.SubareaNombre == subarea);
+                                .ThenInclude(o => o.Categoria);
 
             var cuestionarios = await query.ToListAsync();
 
@@ -132,7 +139,8 @@ namespace CuestionarioNom035.Controllers
                 AreasDisponibles = areasFijas,
                 SubareasDisponibles = string.IsNullOrWhiteSpace(area) ? new() : CatalogoAreas.Subareas(area),
                 AniosDisponibles = anios,
-                TotalCuestionarios = cuestionarios.Count
+                TotalCuestionarios = cuestionarios.Count,
+                TotalEnProceso = enProceso
             };
 
             // Selects
@@ -177,8 +185,8 @@ namespace CuestionarioNom035.Controllers
             vm.DomLabels = dominios.Select(x => x.Nombre).ToList();
             vm.DomValues = dominios.Select(x => Math.Round(x.Prom, 2)).ToList();
 
-            var idl = cuestionarios.Where(c => c.Participante.TipoEmpleado == TipoEmpleado.IDL).ToList();
-            var dl = cuestionarios.Where(c => c.Participante.TipoEmpleado == TipoEmpleado.DL).ToList();
+            var idl = cuestionarios.Where(c => c.TipoEmpleado == TipoEmpleado.IDL).ToList();
+            var dl = cuestionarios.Where(c => c.TipoEmpleado == TipoEmpleado.DL).ToList();
 
             vm.TotalIDL = idl.Count;
             vm.TotalDL = dl.Count;
@@ -196,9 +204,9 @@ namespace CuestionarioNom035.Controllers
                     {
                         Id = c.Id,
                         NumeroEmpleado = c.Participante.NumeroEmpleado,
-                        Area = c.Participante.AreaNombre,
-                        Subarea = c.Participante.SubareaNombre,
-                        TipoEmpleado = c.Participante.TipoEmpleado.ToString(),
+                        Area = c.AreaNombre,
+                        Subarea = c.SubareaNombre,
+                        TipoEmpleado = c.TipoEmpleado.ToString(),
                         Fecha = c.Inicio.ToString("yyyy-MM-dd"),
                         Cfinal = c.Respuestas.Sum(r => _score.MapearValor(r.NumeroPregunta, r.Opcion))
                     })

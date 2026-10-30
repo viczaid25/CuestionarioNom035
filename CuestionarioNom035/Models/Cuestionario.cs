@@ -8,6 +8,11 @@
         public DateTime? Fin { get; set; }
         public int Anio { get; set; }
 
+        // Datos del participante al momento de contestar (no cambian si después cambia de área)
+        public string AreaNombre { get; set; } = "";
+        public string SubareaNombre { get; set; } = "";
+        public TipoEmpleado TipoEmpleado { get; set; }
+
 
         // Importante: nullable porque el flujo pregunta antes de 65 y 69
         public bool? AtiendeClientes { get; set; } // filtro 65-68

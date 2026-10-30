@@ -14,22 +14,7 @@ public static class InitialSeeder
         // 1) Asegura migraciones
         await db.Database.MigrateAsync();
 
-        // 2) Seed Áreas (si no hay)
-        if (!await db.Areas.AnyAsync())
-        {
-            db.Areas.AddRange(new[]
-            {
-                new Area { Nombre = "Administración" },
-                new Area { Nombre = "Operaciones" },
-                new Area { Nombre = "Ventas" },
-                new Area { Nombre = "TI" },
-                new Area { Nombre = "General" }
-            });
-            await db.SaveChangesAsync();
-            logger.LogInformation("Áreas iniciales insertadas.");
-        }
-
-        // 3) Seed Catálogo y Preguntas desde CSV si faltan preguntas
+        // 2) Seed Catálogo y Preguntas desde CSV si faltan preguntas
         if (!await db.Preguntas.AnyAsync())
         {
             var csvPath = Path.Combine(env.ContentRootPath, "App_Data", "Preguntas NOM35.csv");

@@ -7,7 +7,6 @@ public class Nom35DbContext : DbContext
 {
     public Nom35DbContext(DbContextOptions<Nom35DbContext> options) : base(options) { }
 
-    public DbSet<Area> Areas => Set<Area>();
     public DbSet<Participante> Participantes => Set<Participante>();
     public DbSet<Categoria> Categorias => Set<Categoria>();
     public DbSet<Dominio> Dominios => Set<Dominio>();
@@ -23,6 +22,19 @@ public class Nom35DbContext : DbContext
 
         mb.Entity<Pregunta>()
           .HasIndex(p => p.Numero)
+          .IsUnique();
+
+        mb.Entity<CuestionarioSesion>()
+          .HasIndex(s => s.Token)
+          .IsUnique();
+
+        mb.Entity<CuestionarioSesion>()
+          .Property(s => s.Token)
+          .HasDefaultValueSql("NEWID()");
+
+        // Una sola respuesta por pregunta en cada cuestionario
+        mb.Entity<Respuesta>()
+          .HasIndex(r => new { r.CuestionarioId, r.NumeroPregunta })
           .IsUnique();
 
         mb.Entity<Dominio>()
