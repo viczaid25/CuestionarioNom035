@@ -104,10 +104,29 @@ namespace CuestionarioNom035.Controllers
         [HttpGet("Dashboard")]
         public async Task<IActionResult> Dashboard(int? anio, string? area, string? subarea)
         {
-            var areasFijas = CatalogoAreas.Areas();
             int anioActual = FechaHelper.AhoraMexico().Year;
             int anioFiltro = anio ?? anioActual;
             var anios = Enumerable.Range(anioActual - 4, 5).Reverse().ToList();
+
+            // Catálogo actual + nombres ya guardados ese año (el catálogo cambió y los
+            // cuestionarios anteriores conservan el área con la que se contestaron)
+            var areasGuardadas = await _db.Cuestionarios
+                .Where(c => c.Anio == anioFiltro)
+                .Select(c => c.AreaNombre).Distinct().ToListAsync();
+            var areasFijas = CatalogoAreas.Areas()
+                .Concat(areasGuardadas.Where(a => !string.IsNullOrWhiteSpace(a)).OrderBy(a => a))
+                .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            var subareasDisponibles = new List<string>();
+            if (!string.IsNullOrWhiteSpace(area))
+            {
+                var subareasGuardadas = await _db.Cuestionarios
+                    .Where(c => c.Anio == anioFiltro && c.AreaNombre == area)
+                    .Select(c => c.SubareaNombre).Distinct().ToListAsync();
+                subareasDisponibles = CatalogoAreas.Subareas(area)
+                    .Concat(subareasGuardadas.Where(s => !string.IsNullOrWhiteSpace(s)).OrderBy(s => s))
+                    .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            }
 
             // Filtro base (año/área/subárea) sobre los datos guardados en el cuestionario
             var baseQuery = _db.Cuestionarios.Where(c => c.Anio == anioFiltro);
@@ -138,7 +157,7 @@ namespace CuestionarioNom035.Controllers
                 Subarea = subarea,
                 Anio = anioFiltro,
                 AreasDisponibles = areasFijas,
-                SubareasDisponibles = string.IsNullOrWhiteSpace(area) ? new() : CatalogoAreas.Subareas(area),
+                SubareasDisponibles = subareasDisponibles,
                 AniosDisponibles = anios,
                 TotalCuestionarios = cuestionarios.Count,
                 TotalEnProceso = enProceso

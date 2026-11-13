@@ -4,92 +4,101 @@ namespace CuestionarioNom035.Data
 {
     public static class CatalogoAreas
     {
+        // Fuente: "ÁREAS Y SUBÁREAS.xlsx" (nombres tal cual vienen, cortados a 10 caracteres).
+        // Las áreas sin subárea usan "NO APLICA".
         public static readonly Dictionary<string, List<string>> Mapa = new()
         {
-            ["LEGAL"] = new() {
-                "LEGAL COMPLIANCE"
-            },
-            ["KAIZEN PROJECT"] = new() {
-                "KAIZEN"
-            },
-            ["HUMAN RESOURCES (RECRUITMENT & LABOR)"] = new() {
-                "LABOR & UNION",
-                "ORGANIZATIONAL DEVELOPMENT",
-                "RECRUITMENT IDL/DL",
-                "HUMAN RESOURCES GENERALIST",
-                "PAYROLL",
-                "TRAINING"
-            },
-            ["HUMAN RESOURCES"] = new() {
-                "General Affairs",
-                "Executive Driver",
-                "Safety & Health",
-                "Environment",
-                "Facility"
+            ["FACILITY"] = new() {
+                "NO APLICA"
             },
             ["FINANCE"] = new() {
-                "Cost & Inventory Control",
-                "Accounting",
-                "Tax"
+                "NO APLICA"
             },
-            ["BUSINESS AFFAIRS"] = new() {
-                "Customer Service",
-                "Sales"
+            ["HUMAN RESO"] = new() {
+                "NO APLICA"
             },
-            ["PROCUREMENT"] = new() {
-                "Purchasing & Sourcing",
-                "Logistics & Trading"
+            ["IT"] = new() {
+                "NO APLICA"
             },
-            ["INFORMATION TECHNOLOGY (IT)"] = new() {
-                "Infrastructure",
-                "System administrator",
-                "PCS APPS"
+            ["LEGAL"] = new() {
+                "NO APLICA"
             },
-            ["TRANSLATOR"] = new() {
-                "TRANSLATOR"
+            ["PROCUREMEN"] = new() {
+                "NO APLICA"
             },
-            ["PRODUCTION A"] = new() {
-                "Enginnering",
-                "Spare Parts",
-                "LCM",
-                "AMP",
-                "CID",
-                "SMT",
-                "R1 LOW"
-            },
-            ["PRODUCTION B"] = new() {
+            ["PRODUCTION"] = new() {
+                "ALT #3",
                 "ALT ASSY",
                 "ALT GX",
-                "ROTOR",
-                "Regulator & Rectifier",
-                "Bracket",
+                "AMPLIFICAD",
+                "BKT",
+                "BKT FRONT",
+                "BKT-ESTATO",
+                "CID",
                 "CM",
-                "ST ASSY",
-                "YOKE & BH",
-                "SW & Relay",
-                "ST Armature"
-            },
-            ["PRODUCTION CONTROL"] = new() {
-                "PLANNING",
-                "MATERIAL CONTROL"
-            },
-            ["QUALITY CONTROL B"] = new() {
-                "CM",
-                "ALT",
-                "ST",
-                "ST ASSY",
-                "Ar",
-                "Yoke",
-                "BH",
-                "SW",
-                "Relay",
-                "Incoming Inspection"
-            },
-            ["QUALITY CONTROL A"] = new() {
-                "MM",
-                "MCU ASSY",
                 "ECU",
-                "Incoming Inspection"
+                "EPS",
+                "KAIZEN",
+                "KPG",
+                "LCM HONDA",
+                "LCM MAZDA",
+                "LCM TOYOTA",
+                "MCU",
+                "MM",
+                "NO APLICA",
+                "OCV",
+                "PCM-TCU",
+                "R1LOW",
+                "REC&REG",
+                "RECTIFICAD",
+                "REGULADOR",
+                "ROTOR",
+                "SMT",
+                "SP",
+                "ST ARMATUR",
+                "ST ASSY",
+                "ST BH",
+                "ST RELAY",
+                "ST SW",
+                "ST YOKE",
+                "VCT-2G",
+                "VCT-3G",
+                "VCT-4G",
+                "VVT"
+            },
+            ["Q.C. A"] = new() {
+                "ALT GX",
+                "CM",
+                "EPS",
+                "INSPECTION",
+                "LCM MAZDA",
+                "MM",
+                "NO APLICA",
+                "SMT"
+            },
+            ["Q.C. B"] = new() {
+                "BKT-ESTATO",
+                "CM",
+                "MET CALIBR",
+                "NO APLICA"
+            },
+            ["Q.C. PLANN"] = new() {
+                "NO APLICA"
+            },
+            ["QUALITY"] = new() {
+                "CM",
+                "EPS",
+                "INSPECTION",
+                "MET CALIBR",
+                "MM",
+                "NO APLICA",
+                "ST ASSY"
+            },
+            ["SALES"] = new() {
+                "NO APLICA"
+            },
+            ["GENERAL AFFAIRS"] = new() {
+                "PRESIDENT"
             },
         };
 
